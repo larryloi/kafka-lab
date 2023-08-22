@@ -1,0 +1,9 @@
+version: '3'
+services:
+  compiler:
+    image: maven:3.8.4-openjdk-11
+    hostname: openjdk
+    volumes:
+      - .:/code
+    working_dir: /code
+    command: bash -c "mkdir -p /code/jars && mvn dependency:get -Dartifact=org.apache.kafka:kafka-clients:2.8.1 -Ddest=/code/jars && mvn dependency:get -Dartifact=org.apache.kafka:connect-api:2.7.1 -Ddest=/code/jars -DremoteRepositories=https://repo1.maven.org/maven2/ && mvn dependency:get -Dartifact=org.apache.kafka:connect-json:2.8.1 -Ddest=/code/jars && mvn dependency:get -Dartifact=org.apache.kafka:connect-transforms:2.8.1 -Ddest=/code/jars && mvn dependency:get -Dartifact=org.apache.kafka:connect-runtime:2.8.1 -Ddest=/code/jars && apt update && apt install -y vim && rm -rf /var/lib/apt/lists/* && cp /code/.vimrc ~/.vimrc && bash"
