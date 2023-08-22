@@ -1,0 +1,27 @@
+{
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "name": {
+        "type": "text"
+      },
+      "date_birth": {
+        "type": "date"
+      },
+      "created_at": {
+        "type": "date"
+      },
+      "updated_at": {
+        "type": "date"
+      },
+      "detail": {
+        "type": "object"
+      },
+      "dept_id": {
+        "type": "integer"
+      }
+    }
+  }
+}
