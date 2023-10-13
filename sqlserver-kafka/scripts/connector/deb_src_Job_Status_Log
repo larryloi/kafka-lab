@@ -1,0 +1,34 @@
+{
+  "name": "deb_src_Job_Status_Log",
+  "config": {
+    "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
+    "database.hostname": "centos7.kaskade.local",
+    "database.port": "1433",
+    "database.user": "schematic",
+    "database.password": "schematic123",
+    "database.names": "schematic_test_src",
+    "database.encrypt": "false",
+
+    "key.converter":"org.apache.kafka.connect.storage.StringConverter",
+    "key.converter.schema.registry.url":"http://schema-registry:8081",
+
+    "value.converter":"org.apache.kafka.connect.StringConverter",
+    "value.converter.schema.registry.url":"http://schema-registry:8081",
+
+    "topic.prefix": "schematic.SourceSchema.Job_Status_Log",
+    "poll.interval.ms": "5000",
+    "tasks.max": "1",
+
+    "table.include.list": "SourceSchema.Job_Status_Log",
+
+    "pk.fields": "JobLogId",
+    "pk.mode": "record_key",
+
+    "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
+    "schema.history.internal.kafka.topic": "schemahistory.SourceSchema.Job_Status_Log",
+
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true"
+
+  }
+}

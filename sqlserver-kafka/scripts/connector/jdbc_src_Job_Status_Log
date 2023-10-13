@@ -1,0 +1,36 @@
+{  
+  "name": "jdbc_src_Job_Status_Log",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+
+    "connection.url": "jdbc:sqlserver://centos7:1433;databaseName=schematic_test_src",
+    "connection.user": "schematic",
+    "connection.password": "schematic123",
+
+    "key.converter":"org.apache.kafka.connect.storage.StringConverter",
+    "key.converter.schema.registry.url":"http://schema-registry:8081",
+
+    "value.converter":"io.confluent.connect.protobuf.ProtobufConverter",
+    "value.converter.schema.registry.url":"http://schema-registry:8081",
+
+    "transforms": "setSchemaMetadata",
+    "transforms.setSchemaMetadata.type": "org.apache.kafka.connect.transforms.SetSchemaMetadata$Value",
+    "transforms.setSchemaMetadata.schema.name": "JobLog",
+
+    "mode": "timestamp",
+    "timestamp.column.name": "ETL_StartTime",
+
+    "query": "SELECT [JobLogId] ,[ETL_Procedure] ,[ETL_Parameter] ,[ETL_StartTime] ,[ETL_CompleteTime] ,[ETL_Status] ,[ETL_Status_Description] ,[ETL_UpdatedRecordCount] [ETL_ProcessDetail] ,[ETL_StepsDetail] ,[ETL_Execute_By] ,[ETL_Batch_ID] ,[DP_Records_Insert_DateTime] FROM [schematic_test_src].[SourceSchema].[Job_Status_Log]  ",
+
+
+    "topic.prefix": "schematic.SourceSchema.Job_Status_Log",
+    "poll.interval.ms": "10000",
+    "tasks.max": "1",
+
+    "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
+    "schema.history.internal.kafka.topic": "schemahistory.SourceSchema.Job_Status_Log",
+
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "dst_ETL_LOG_Job_Status_Log_2",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "tasks.max": "1",
+    "topics": "v1.FTest.ETL_LOG.Job_Status_Log_2",
+    "connection.url": "jdbc:sqlserver://centos7;instance=SQLEXPRESS;databaseName=FTest_Dest",
+    "connection.user": "schematic",
+    "connection.password": "schematic123",
+
+    "auto.evolve": "true",
+    "insert.mode": "upsert",
+    "pk.mode": "record_key",
+    "pk.fields": "JobLogId",
+
+    "table.name.format": "FTest_Dest.Job_Status_Log_2",
+
+    "key.converter":"org.apache.kafka.connect.storage.StringConverter",
+    "key.converter.schema.registry.url":"http://schema-registry:8081",
+
+    "value.converter":"org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schema.registry.url":"http://schema-registry:8081"
+
+  }
+}

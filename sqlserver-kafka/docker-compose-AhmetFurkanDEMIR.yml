@@ -71,6 +71,7 @@ services:
       - "8083:8083"
     volumes:
       - $PWD/connect-plugins:/connect-plugins
+      - $PWD/connect-smt:/connect-smt
     environment:
       CONNECT_BOOTSTRAP_SERVERS: 'broker:29092'
       CONNECT_REST_ADVERTISED_HOST_NAME: connect
@@ -89,7 +90,7 @@ services:
       CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-7.1.0.jar
       CONNECT_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
-      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components,/connect-plugins"
+      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components,/connect-plugins,/connect-smt"
       CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
       CONNECT_REST_ADVERTISED_HOST_NAME: 'connect'
       CONNECT_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -212,65 +213,9 @@ services:
     networks:
       - integration
 
-#  es:
-#    container_name: es
-#    hostname: es
-#    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.12
-#    volumes:
-#      - esdata01:/usr/share/elasticsearch/data
-#    ports:
-#      - '9200:9200'
-#      - '9300:9300'
-#    environment:
-#      - xpack.security.enabled=false
-#      - discovery.type=single-node
-#      - bootstrap.memory_lock=true
-#      - 'ES_JAVA_OPTS=-Xms1g -Xmx1g'
-#      - cluster.routing.allocation.disk.threshold_enabled=false
-#    ulimits:
-#      memlock:
-#        soft: -1
-#        hard: -1
-
-#  kibana:
-#    container_name: kibana
-#    image: docker.elastic.co/kibana/kibana:7.10.2
-#    ports:
-#      - '5601:5601'
-#    depends_on:
-#      - es
-#    environment:
-#      SERVER_NAME: kibana.example.org
-#      ELASTICSEARCH_HOSTS: '["http://es:9200"]'
-#    networks:
-#      - integration
-
-#  bi-db:
-#    image: mcr.microsoft.com/mssql/server:2017-CU24-ubuntu-16.04
-#    env_file:
-#      - .env
-#    container_name: "${DM_SQLSVR_HOST}"
-#    environment:
-#      ACCEPT_EULA: Y
-#      SA_PASSWORD: Vg6gEcSGL7p8KbCN
-#      # MSSQL_PID: Developer
-#      MSSQL_DATABASE: anubis_dm_test1
-#      MSSQL_COLLATION: Latin1_General_CS_AS
-#      MSSQL_MEMORY_LIMIT_MB: 2048
-#      MSSQL_AGENT_ENABLED: 1
-#    ports:
-#      - 1433:1433
-#    volumes:
-#      - ./db/mssql:/mssql-init
-#      - vol-bi-db:/var/opt/mssql/data
-
 
 networks:
   integration:
     external: true
 
 
-#volumes:
-  #esdata01:
-  #  driver: local
-#  vol-bi-db:

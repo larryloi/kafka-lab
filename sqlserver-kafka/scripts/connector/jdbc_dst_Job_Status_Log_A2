@@ -1,0 +1,36 @@
+{
+  "name": "jdbc_dst_Job_Status_Log_A2",
+  "config": {
+
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+
+    "key.converter.schema.registry.url": "http://schema-registry:8081",
+    "key.converter" : "org.apache.kafka.connect.storage.StringConverter",
+
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter": "io.confluent.connect.protobuf.ProtobufConverter",
+
+    "errors.tolerance": "all",
+
+    "topics": "schematic.SourceSchema.Job_Status_Log",
+
+    "connection.url": "jdbc:sqlserver://centos7:1433;databaseName=schematic_test_dst",
+    "connection.user": "schematic",
+    "connection.password": "schematic123",
+    "poll.interval.ms": "5000",
+    "tasks.max": "1",
+
+    "dialect.name": "SqlServerDatabaseDialect",
+    "table.name.format": "schematic_test_dst.DestSchema.Job_Status_Log_A2",
+    "fields.whitelist": "JobLogId,ETL_Procedure,ETL_Parameter,ETL_StartTime",
+
+    "pk.mode": "none",
+    "auto.create": "true",
+    "auto.evolve": "true",
+    "quote.sql.identifiers": "always",
+    "flatten": "true",
+    "flatten.coordinates": "true"
+
+
+  }
+}

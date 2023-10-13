@@ -1,0 +1,35 @@
+{
+  "name": "ETL_LOG_Job_Status_Log_2_dst",
+  "config":  {
+    "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+    "connection.url": "http://es:9200",
+    "tasks.max": "1",
+    "topics": "v1.Function_Test.ETL_LOG.Job_Status_Log_2",
+    "type.name": "JobLogId",
+     
+    "key.converter.schemas.enable": "true",
+    "key.converter.schema.registry.url": "http://schema-registry:8081",
+    "key.converter" : "org.apache.kafka.connect.storage.StringConverter",
+     
+    "value.converter.schemas.enable": "true",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+     
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+     
+    "behavior.on.null.values": "DELETE",
+    "behavior.on.malformed.documents": "IGNORE",
+    "schema.ignore": "true",
+    "key.ignore":"true",
+
+    "transforms": "ExtractFieldAfter,ParseETLStepsDetail",
+
+    "transforms.ExtractFieldAfter.type": "org.apache.kafka.connect.transforms.ExtractField$Value",
+    "transforms.ExtractFieldAfter.field": "after",
+
+    "transforms.ParseETLStepsDetail.type": "com.github.larryloi.kafka.connect.smt.ParseETLStepsDetail",
+    "transforms.ParseETLStepsDetail.field.name": "ETL_StepsDetail"
+  }
+}
+
