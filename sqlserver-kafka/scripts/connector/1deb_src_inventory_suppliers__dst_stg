@@ -1,0 +1,42 @@
+{
+  "name": "1deb_src_inventory_suppliers__dst_stg",
+  "config": {
+
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+
+    "key.converter.schema.registry.url": "http://schema-registry:8081",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "false",
+    
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+
+    "errors.tolerance": "all",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+
+    "topics": "INVENTORY.inventory.inv.suppliers",
+
+    "connection.url": "jdbc:sqlserver://centos7:1433;databaseName=STG",
+    "connection.user": "schematic",
+    "connection.password": "schematic123",
+    "poll.interval.ms": "10000",
+    "tasks.max": "1",
+
+    "dialect.name": "SqlServerDatabaseDialect",
+    "table.name.format": "STG.stg.suppliers",
+
+    "pk.mode": "record_key",
+    "pk.fields": "id",
+    "auto.evolve": "true",
+    "insert.mode": "upsert",
+    "quote.sql.identifiers": "always",
+
+    "transforms": "unwrap,flatten,extractKey",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+
+    "transforms.flatten.type": "org.apache.kafka.connect.transforms.Flatten$Value",
+    "transforms.extractKey.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+    "transforms.extractKey.field": "id"
+  }
+}

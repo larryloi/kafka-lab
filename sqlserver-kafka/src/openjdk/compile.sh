@@ -1,7 +1,7 @@
 #!/bin/bash
 JAR_SRC_PATH=/code/jars
 JAVA_SRC_PATH=com/github/larryloi/kafka/connect/smt
-JAVA_SRC_NAME=ConvertStringToJson
+JAVA_SRC_NAME=LogMessageSMT
 
 COMPILE()
     {
@@ -11,8 +11,8 @@ COMPILE()
 
 JAR()
     {
-        echo "Executing: jar cvf ${JAVA_SRC_NAME}.jar ${JAVA_SRC_PATH}/${JAVA_SRC_NAME}.class"
-        jar cvf ${JAVA_SRC_NAME}.jar ${JAVA_SRC_PATH}/${JAVA_SRC_NAME}.class
+        echo "Executing: jar cvf \"${JAR_SRC_PATH}/${JAVA_SRC_NAME}.jar\" ${JAVA_SRC_PATH}/${JAVA_SRC_NAME}.class"
+        jar cvf "${JAR_SRC_PATH}/${JAVA_SRC_NAME}.jar" ${JAVA_SRC_PATH}/${JAVA_SRC_NAME}.class
     }
 
 

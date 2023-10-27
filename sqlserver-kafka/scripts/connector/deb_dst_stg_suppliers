@@ -1,0 +1,35 @@
+{
+  "name": "deb_dst_stg_suppliers",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "tasks.max": "1",
+
+    "connection.url": "jdbc:sqlserver://centos7:1433;databaseName=STG",
+    "connection.user": "schematic",
+    "connection.password": "schematic123",
+
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schema.registry.url": "http://schema-registry:8081",
+    "key.converter.schemas.enable": "true",
+
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.schemas.enable": "true",
+
+    "topics": "INVENTORY.inventory.inv.suppliers",
+
+    "auto.create": "true",
+    "auto.evolve": "true",
+    "insert.mode": "upsert",
+    "delete.enabled": "true",
+
+    "pk.mode": "record_key",
+    "pk.fields": "id",
+
+    "table.name.format": "STG.stg.suppliers",
+
+    "transforms": "dropSourceField",
+    "transforms.dropSourceField.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
+    "transforms.dropSourceField.blacklist": "source,op"
+  }
+}

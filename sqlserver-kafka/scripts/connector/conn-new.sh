@@ -46,7 +46,7 @@ environments=("test" "staging" "production")
       curl -k \
       -X POST "${baseUrl}/${objUrl}" \
       -H 'Content-Type: application/json' \
-      -d "$SCHEMA"
+      -d "$SCHEMA" | jq '.' 
     }
 
 #echo $#

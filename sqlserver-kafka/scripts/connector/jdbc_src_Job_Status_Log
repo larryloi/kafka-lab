@@ -24,7 +24,7 @@
 
 
     "topic.prefix": "schematic.SourceSchema.Job_Status_Log",
-    "poll.interval.ms": "10000",
+    "poll.interval.ms": "600000",
     "tasks.max": "1",
 
     "schema.history.internal.kafka.bootstrap.servers": "broker:29092",

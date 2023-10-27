@@ -17,7 +17,7 @@
     "connection.url": "jdbc:sqlserver://centos7:1433;databaseName=schematic_test_dst",
     "connection.user": "schematic",
     "connection.password": "schematic123",
-    "poll.interval.ms": "5000",
+    "poll.interval.ms": "600000",
     "tasks.max": "1",
 
     "dialect.name": "SqlServerDatabaseDialect",
