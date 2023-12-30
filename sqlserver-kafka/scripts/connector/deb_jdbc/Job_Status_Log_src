@@ -1,5 +1,5 @@
 {
-  "name": "deb_src_Job_Status_Log",
+  "name": "Job_Status_Log_src",
   "config": {
     "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
     "database.hostname": "centos7.kaskade.local",

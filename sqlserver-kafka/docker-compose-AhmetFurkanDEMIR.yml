@@ -70,8 +70,8 @@ services:
     ports:
       - "8083:8083"
     volumes:
-      - $PWD/connect-plugins:/connect-plugins
-      - $PWD/connect-smt:/connect-smt
+      - ./connect-plugins:/connect-plugins
+      - ./connect-smt:/connect-smt
     environment:
       CONNECT_BOOTSTRAP_SERVERS: 'broker:29092'
       CONNECT_REST_ADVERTISED_HOST_NAME: connect

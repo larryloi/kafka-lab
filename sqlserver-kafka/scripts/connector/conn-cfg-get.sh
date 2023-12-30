@@ -1,3 +1,4 @@
 #!/bin/bash
+source .connector.conf
 
-curl -X GET "http://localhost:8083/connectors/${1}/config"| jq -S .
+curl -X GET "http://${baseUrl}/${objUrl}/${1}/config"| jq -S .

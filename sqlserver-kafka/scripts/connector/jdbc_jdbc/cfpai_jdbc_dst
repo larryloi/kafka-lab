@@ -1,0 +1,18 @@
+{
+  "name": "cfpai_jdbc_dst",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schema.registry.url":"http://schema-registry:8081",
+    "value.converter.schemas.enable": "false",
+    "topics": "CFPAI",
+    "connection.url": "jdbc:sqlserver://centos7:1433;databaseName=STG",
+    "connection.user": "schematic",
+    "connection.password": "schematic123",
+    "auto.create": "true",
+    "insert.mode": "insert",
+    "table.name.format": "STG.stg.cfpai",
+    "pk.mode": "record_value"
+  }
+}

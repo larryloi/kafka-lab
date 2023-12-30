@@ -1,0 +1,32 @@
+{
+  "name": "inventory_suppliers_jdbc_src",
+  "config": {
+      "connector.class" : "io.confluent.connect.jdbc.JdbcSourceConnector",
+ 
+      "connection.url": "jdbc:sqlserver://centos7:1433;databaseName=inventory",
+      "connection.user": "schematic",
+      "connection.password": "schematic123",
+ 
+      "transforms": "setSchemaMetadata",
+      "transforms.setSchemaMetadata.type": "org.apache.kafka.connect.transforms.SetSchemaMetadata$Value",
+      "transforms.setSchemaMetadata.schema.name": "INVENTORY.suppliers",
+ 
+      "errors.log.enable": "true",
+      "errors.log.include.messages": "true",
+ 
+      "topic.prefix": "INVENTORY.suppliers.jdbc",
+      "poll.interval.ms": "15000",
+      "tasks.max": "1",
+ 
+      "key.converter":"org.apache.kafka.connect.storage.StringConverter",
+  
+      "value.converter":"io.confluent.connect.protobuf.ProtobufConverter",
+      "value.converter.schema.registry.url":"http://schema-registry:8081",
+      "value.converter.schemas.enable": "true",
+ 
+      "query": "SELECT id, first_name, last_name, email, created_at FROM [inventory].[inv].[suppliers]",
+      "mode": "timestamp+incrementing",
+      "incrementing.column.name": "id",
+      "timestamp.column.name": "created_at"
+    }
+}

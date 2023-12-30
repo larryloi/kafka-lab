@@ -1,0 +1,33 @@
+{
+  "name": "inventory_customers_deb_dst_STG_CUST2",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schema.registry.url":"http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schema.registry.url":"http://schema-registry:8081",
+    "value.converter.schemas.enable": "true",
+    "errors.tolerance": "all",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+    "topics": "DEB.inventory.inv.customers",
+    "connection.url": "jdbc:sqlserver://centos7:1433;databaseName=STG",
+    "connection.user": "schematic",
+    "connection.password": "schematic123",
+    "poll.interval.ms": "10000",
+    "tasks.max": "1",
+    "dialect.name": "SqlServerDatabaseDialect",
+    "table.name.format": "STG.stg.customers2",
+    "pk.mode": "kafka",
+    "auto.evolve": "true",
+    "insert.mode": "upsert",
+    "quote.sql.identifiers": "always",
+    "delete.enabled": "false",
+    "auto.create": "true",
+
+    "transforms": "flatten",
+    "transforms.flatten.type": "org.apache.kafka.connect.transforms.Flatten$Value",
+    "transforms.flatten.delimiter": "_"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "name": "jdbc_dst_Job_Status_Log_A2",
+  "name": "Job_Status_Log_A2_jdbc_dst",
   "config": {
 
     "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",

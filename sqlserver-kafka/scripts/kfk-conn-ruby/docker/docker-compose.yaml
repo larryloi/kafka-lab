@@ -1,0 +1,16 @@
+version: "3"
+services:
+  app:
+    build: .
+    volumes:
+      - ../:/app
+#    command: bundle exec ruby your_script.rb
+    entrypoint: /bin/bash
+    stdin_open: true
+    tty: true
+    networks:
+      - integration
+
+networks:
+  integration:
+    external: true

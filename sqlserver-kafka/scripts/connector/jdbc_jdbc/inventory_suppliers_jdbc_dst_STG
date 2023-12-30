@@ -1,0 +1,35 @@
+{
+  "name": "inventory_suppliers_jdbc_dst_STG",
+  "config": {
+
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+
+    "key.converter" : "org.apache.kafka.connect.storage.StringConverter",
+
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter": "io.confluent.connect.protobuf.ProtobufConverter",
+
+    "errors.tolerance": "all",
+
+    "topics": "INVENTORY.suppliers.jdbc",
+
+    "connection.url": "jdbc:sqlserver://centos7:1433;databaseName=STG",
+    "connection.user": "schematic",
+    "connection.password": "schematic123",
+    "poll.interval.ms": "15000",
+    "tasks.max": "1",
+
+    "dialect.name": "SqlServerDatabaseDialect",
+    "table.name.format": "STG.stg.suppliers",
+
+    "pk.mode": "record_value",
+    "pk.fields": "id",
+    "insert.mode": "upsert",
+    "auto.create": "true",
+    "auto.evolve": "true",
+    "quote.sql.identifiers": "always",
+    "flatten": "true",
+    "flatten.coordinates": "true"
+
+  }
+}

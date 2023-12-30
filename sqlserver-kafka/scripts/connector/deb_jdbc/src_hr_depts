@@ -1,5 +1,5 @@
-{ 
- "name": "1deb_src_inventory",
+{
+ "name": "src_hr_depts",
  "config": {
      "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
      "tasks.max" : "1",
@@ -9,7 +9,7 @@
      "database.port" : "1433",
      "database.user" : "schematic",
      "database.password" : "schematic123",
-     "database.names": "inventory",
+     "database.names": "HR",
      "database.encrypt": "false",
 
      "errors.log.enable": "true",
@@ -17,7 +17,7 @@
 
      "database.history.kafka.bootstrap.servers" : "broker:9092",
      "database.history.kafka.topic": "schema-changes.inventory",
-     "topic.prefix": "INVENTORY",
+     "topic.prefix": "SRC",
 
      "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
      "schema.history.internal.kafka.topic": "schemahistory.dbo.inventory",
@@ -30,16 +30,14 @@
      "value.converter.schema.registry.url":"http://schema-registry:8081",
      "value.converter.schemas.enable": "true",
 
-     "table.include.list": "inv.suppliers,inv.customers",
+     "table.include.list": "hr.depts",
      "include.schema.changes": "true",
 
      "pk.fields": "id",
      "pk.mode": "record_key",
 
      "tombstones.on.delete": "false",
-
-     "transforms": "unwrap",
-     "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState"
+     "time.precision.mode":"connect"
 
      }
  }
