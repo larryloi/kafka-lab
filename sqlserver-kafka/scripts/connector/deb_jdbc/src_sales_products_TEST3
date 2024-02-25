@@ -1,0 +1,41 @@
+{
+ "name": "src_sales_products_TEST3",
+ "config": {
+     "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
+     "tasks.max" : "1",
+     "poll.interval.ms": "15000",
+
+     "database.hostname" : "centos7.kaskade.local",
+     "database.port" : "1433",
+     "database.user" : "schematic",
+     "database.password" : "schematic123",
+     "database.names": "SALES",
+     "database.encrypt": "false",
+
+     "errors.log.enable": "true",
+     "errors.log.include.messages": "true",
+
+     "database.history.kafka.bootstrap.servers" : "broker:9092",
+     "database.history.kafka.topic": "schema-changes.default",
+     "topic.prefix": "TEST3",
+
+     "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
+     "schema.history.internal.kafka.topic": "schemahistory.default",
+
+     "key.converter":"org.apache.kafka.connect.json.JsonConverter",
+     "key.converter.schemas.enable": "true",
+ 
+     "value.converter":"org.apache.kafka.connect.json.JsonConverter",
+     "value.converter.schemas.enable": "true",
+
+     "table.include.list": "sales.products",
+     "include.schema.changes": "true",
+
+     "pk.fields": "id",
+     "pk.mode": "record_key",
+
+     "tombstones.on.delete": "false",
+     "time.precision.mode":"connect"
+
+     }
+ }

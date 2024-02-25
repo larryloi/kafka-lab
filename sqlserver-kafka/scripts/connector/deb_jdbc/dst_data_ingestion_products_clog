@@ -1,0 +1,38 @@
+
+{
+  "name": "dst_data_ingestion_products_clog",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schema.registry.url": "http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.schemas.enable": "true",
+
+    "errors.tolerance": "all",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+
+    "topics": "SALES.SALES.sales.products",
+    "connection.url": "jdbc:sqlserver://centos7:1433;databaseName=data-ingestion",
+    "connection.user": "schematic",
+    "connection.password": "schematic123",
+
+    "poll.interval.ms": "10000",
+    "tasks.max": "1",
+    "dialect.name": "SqlServerDatabaseDialect",
+    "table.name.format": "data-ingestion.DW_ETL.products_clog",
+    "pk.mode": "kafka",
+    "auto.evolve": "true",
+    "insert.mode": "upsert",
+    "quote.sql.identifiers": "always",
+    "delete.enabled": "false",
+    "auto.create": "true",
+
+    "transforms": "flatten",
+    "transforms.flatten.type": "org.apache.kafka.connect.transforms.Flatten$Value",
+    "transforms.flatten.delimiter": "_"
+  }
+}
