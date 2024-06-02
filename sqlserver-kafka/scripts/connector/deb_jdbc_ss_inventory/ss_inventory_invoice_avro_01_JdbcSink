@@ -1,0 +1,51 @@
+{
+  "name": "ss_inventory_invoice_avro_01_JdbcSink",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "tasks.max": "1",
+    "topics": "ss_inventory_invoice_avro_01.inventory.INV.invoices",
+    "connection.url": "jdbc:sqlserver://rdb1:1433;databaseName=DWH2",
+    "connection.user": "SVC_DS_KAFKA",
+    "connection.password": "Abcd1234",
+
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url":"http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url":"http://schema-registry:8081",
+    "value.converter.schemas.enable": "false",
+
+    "auto.create": "true",
+    "insert.mode": "upsert",
+    "pk.mode": "record_key",
+    "pk.fields": "id",
+    "table.name.format": "DWH2.DW_ETL.invoices_avro_01",
+
+    "delete.enabled": "true",
+
+    "transforms": "unwrap,extractKey,CreatedConvert,UpdatedConvert",
+
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "false",
+    "transforms.unwrap.delete.handling.mode": "rewrite",
+    "transforms.unwrap.add.fields": "op",
+
+    "transforms.extractKey.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+    "transforms.extractKey.field": "id",
+
+    "transforms.CreatedConvert.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.CreatedConvert.target.type": "Timestamp",
+    "transforms.CreatedConvert.field": "created_at",
+    "transforms.CreatedConvert.format": "yyyy-MM-dd HH:mm:ss",
+
+    "transforms.UpdatedConvert.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.UpdatedConvert.target.type": "Timestamp",
+    "transforms.UpdatedConvert.field": "updated_at",
+    "transforms.UpdatedConvert.format": "yyyy-MM-dd HH:mm:ss",
+
+    "errors.tolerance": "all",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true"
+  }
+}

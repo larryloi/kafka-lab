@@ -1,4 +1,4 @@
-include .connector.conf
+include connector.conf
 
 list:
 	curl -X GET http://$(baseUrl)/$(objUrl)/| jq 'sort'
@@ -6,13 +6,14 @@ list:
   jq '. | to_entries[] | [ .value.info.type, .key, .value.status.connector.state,.value.status.tasks[].state, .value.info.config."connector.class"] |join(":|:")' | \
   column -s : -t| sed 's/\"//g'| sort
 
-new:
+up:
 	CONN_FILE=$(shell pwd)/${conn}; \
 	CONN=$$(cat $${CONN_FILE}); \
 	echo "Creating connector $${conn}"; \
-	curl -k -X POST "${baseUrl}/${objUrl}" -H 'Content-Type: application/json' -d "$${CONN}" | jq '.'
+	curl -k -X POST "${baseUrl}/${objUrl}" -H 'Content-Type: application/json' -d "$${CONN}"
+#	curl -k -X POST "${baseUrl}/${objUrl}" -H 'Content-Type: application/json' -d "$${CONN}" | jq '.'
 
-rm:
+down:
 	curl -X DELETE http://${baseUrl}/${objUrl}/${conn}
 	curl -X GET http://${baseUrl}/${objUrl}/| jq 'sort'
 

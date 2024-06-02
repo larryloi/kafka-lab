@@ -1,0 +1,37 @@
+{
+  "name": "ss_inventory_order_avro_01_DebeziumSrc",
+  "config": {
+      "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
+      "tasks.max" : "1",
+      "poll.interval.ms": "15000",
+ 
+      "database.hostname" : "rdb1.kaskade.local",
+      "database.port" : "1433",
+      "database.user" : "SVC_DS_KAFKA",
+      "database.password" : "Abcd1234",
+      "database.names": "inventory",
+      "database.encrypt": "false",
+ 
+      "topic.prefix": "ss_inventory_order_avro_01",
+ 
+      "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
+      "schema.history.internal.kafka.topic": "ss_inventory_order_avro_01.schemahistory",
+
+      "database.history.kafka.topic.auto.create": "true",
+ 
+      "key.converter": "io.confluent.connect.avro.AvroConverter",
+      "key.converter.schema.registry.url":"http://schema-registry:8081",
+      "key.converter.schemas.enable": "false",
+ 
+      "value.converter": "io.confluent.connect.avro.AvroConverter",
+      "value.converter.schema.registry.url":"http://schema-registry:8081",
+      "value.converter.schemas.enable": "false",
+ 
+      "table.include.list": "INV.orders",
+      "include.schema.changes": "true",
+      "snapshot.mode": "initial",
+ 
+      "errors.log.enable": "true",
+      "errors.log.include.messages": "true"
+      }
+  }
