@@ -1,5 +1,5 @@
 {
- "name": "ss_inventory_invoice_json_01_DebeziumSrc",
+ "name": "ss_inventory_invoice_json_01_key_false_value_true_DebeziumSrc",
  "config": {
      "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
      "tasks.max" : "1",
@@ -15,16 +15,14 @@
      "errors.log.enable": "true",
      "errors.log.include.messages": "true",
 
-     "topic.prefix": "ss_inventory_invoice_json_01",
-
-      "database.history.kafka.topic.auto.create": "true",
+     "topic.prefix": "ss_inventory_invoice_json_01_key_false_value_true_DebeziumSrc",
 
      "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
-     "schema.history.internal.kafka.topic": "ss_inventory_invoice_json_01.schemahistory",
+     "schema.history.internal.kafka.topic": "ss_inventory_invoice_json_01_key_false_value_true_DebeziumSrc.schemahistory",
 
      "key.converter":"io.confluent.connect.json.JsonSchemaConverter",
      "key.converter.schema.registry.url":"http://schema-registry:8081",
-     "key.converter.schemas.enable": "true",
+     "key.converter.schemas.enable": "false",
 
      "value.converter":"io.confluent.connect.json.JsonSchemaConverter",
      "value.converter.schema.registry.url":"http://schema-registry:8081",
@@ -32,7 +30,7 @@
 
      "table.include.list": "INV.invoices",
      "include.schema.changes": "true",
-      "snapshot.mode": "initial",
+    "snapshot.mode": "initial",
 
      "tombstones.on.delete": "false",
      "time.precision.mode":"connect"

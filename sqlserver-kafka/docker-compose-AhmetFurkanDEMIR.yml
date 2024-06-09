@@ -1,6 +1,7 @@
 ### https://github.com/AhmetFurkanDEMIR/SQL-Server-Kafka-Example/blob/main/docker-compose.yml
 ---
-version: '2'
+#version: '2'
+#version: '3.7'
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.1.0
@@ -13,6 +14,8 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     networks:
       - integration
+      #integration:
+#        ipv4_address: 172.19.0.2
 
   broker:
     image: confluentinc/cp-server:7.1.0
@@ -46,6 +49,7 @@ services:
       - kafka-broker-data:/var/lib/kafka/data
     networks:
       - integration
+#        ipv4_address: 172.19.0.3
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.1.0
@@ -217,9 +221,68 @@ services:
       - integration
 
 
+#  pinot-zookeeper:
+#    image: zookeeper:3.5.6
+#    container_name: pinot-zookeeper
+#    ports:
+#      - "22181:22181"
+#    environment:
+#      ZOOKEEPER_CLIENT_PORT: 22181
+#      ZOOKEEPER_TICK_TIME: 2000
+#    networks:
+#      - integration
+#        ipv4_address: 172.19.0.100
+#  pinot-controller:
+#    image: apachepinot/pinot:1.1.0
+#    command: "StartController -zkAddress pinot-zookeeper:2181"
+#    container_name: pinot-controller
+#    restart: unless-stopped
+#    ports:
+#      - "9000:9000"
+#    environment:
+#      JAVA_OPTS: "-Dplugins.dir=/opt/pinot/plugins -Xms1G -Xmx4G -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xloggc:gc-pinot-controller.log"
+#    depends_on:
+#      - pinot-zookeeper
+#    networks:
+#      - integration
+#
+#  pinot-broker:
+#    image: apachepinot/pinot:1.1.0
+#    command: "StartBroker -zkAddress pinot-zookeeper:2181"
+#    restart: unless-stopped
+#    container_name: "pinot-broker"
+#    ports:
+#      - "8099:8099"
+#    environment:
+#      JAVA_OPTS: "-Dplugins.dir=/opt/pinot/plugins -Xms4G -Xmx4G -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xloggc:gc-pinot-broker.log"
+#    depends_on:
+#      - pinot-controller
+#    networks:
+#      - integration
+#
+#  pinot-server:
+#    image: apachepinot/pinot:1.1.0
+#    command: "StartServer -zkAddress pinot-zookeeper:2181"
+#    restart: unless-stopped
+#    container_name: "pinot-server"
+#    ports:
+#      - "8098:8098"
+#    environment:
+#      JAVA_OPTS: "-Dplugins.dir=/opt/pinot/plugins -Xms4G -Xmx16G -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xloggc:gc-pinot-server.log"
+#    depends_on:
+#      - pinot-broker
+#    networks:
+#      - integration
+
+
 networks:
   integration:
-    driver: bridge
+    external: true
+    #driver: bridge
+#    ipam:
+#      config:
+#        - subnet: 172.19.0.0/24
+#          gateway: 172.19.0.1
 
 
 volumes:

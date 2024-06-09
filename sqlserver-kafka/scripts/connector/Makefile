@@ -7,22 +7,21 @@ list:
   column -s : -t| sed 's/\"//g'| sort
 
 up:
-	CONN_FILE=$(shell pwd)/${conn}; \
+	CONN_FILE=$(shell pwd)/${name}; \
 	CONN=$$(cat $${CONN_FILE}); \
-	echo "Creating connector $${conn}"; \
-	curl -k -X POST "${baseUrl}/${objUrl}" -H 'Content-Type: application/json' -d "$${CONN}"
-#	curl -k -X POST "${baseUrl}/${objUrl}" -H 'Content-Type: application/json' -d "$${CONN}" | jq '.'
+	echo "Creating connector $${name}"; \
+	curl -k -X POST "${baseUrl}/${objUrl}" -H 'Content-Type: application/json' -d "$${CONN}" | jq '.'
 
 down:
-	curl -X DELETE http://${baseUrl}/${objUrl}/${conn}
+	curl -X DELETE http://${baseUrl}/${objUrl}/${name}
 	curl -X GET http://${baseUrl}/${objUrl}/| jq 'sort'
 
 status:
-	curl -X GET http://${baseUrl}/${objUrl}/${conn}/status|jq '.'
+	curl -X GET http://${baseUrl}/${objUrl}/${name}/status|jq '.'
 	
 
 plugins:
 	curl -X GET http://${baseUrl}/connector-plugins | jq '.[].class'
 
 config:
-	curl -X GET "http://${baseUrl}/${objUrl}/${conn}/config"| jq -S .
+	curl -X GET "http://${baseUrl}/${objUrl}/${name}/config"| jq -S .

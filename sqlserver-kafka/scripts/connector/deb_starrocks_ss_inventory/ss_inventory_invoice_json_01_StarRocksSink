@@ -1,0 +1,54 @@
+{
+  "name": "ss_inventory_invoice_json_01_StarRocksSink",
+  "config": {
+    "connector.class": "com.starrocks.connector.kafka.StarRocksSinkConnector",
+    "tasks.max": "1",
+    "topics": "ss_inventory_invoice_json_01_key_true_value_false_DebeziumSrc",
+
+    "starrocks.http.url": "10.2.2.6:1030",
+    "starrocks.topic2table.map": "ss_inventory_invoice_json_01_key_true_value_false_DebeziumSrc:invoices_json_01",
+    "starrocks.username": "SVC_DS_KAFKA",
+
+    "starrocks.password": "Abcd1234",
+    "starrocks.database.name": "DWH",
+
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schema.registry.url":"http://schema-registry:8081",
+    "key.converter.schemas.enable": "true",
+
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schema.registry.url":"http://schema-registry:8081",
+    "value.converter.schemas.enable": "false",
+
+    "auto.create": "true",
+    "insert.mode": "upsert",
+    "pk.mode": "record_key",
+    "pk.fields": "id",
+
+    "delete.enabled": "true",
+
+    "transforms": "CreatedConvert,UpdatedConvert,addfield,unwrap",
+
+    "transforms.CreatedConvert.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.CreatedConvert.target.type": "Timestamp",
+    "transforms.CreatedConvert.field": "created_at",
+    "transforms.CreatedConvert.format": "yyyy-MM-dd HH:mm:ss",
+
+    "transforms.UpdatedConvert.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.UpdatedConvert.target.type": "Timestamp",
+    "transforms.UpdatedConvert.field": "updated_at",
+    "transforms.UpdatedConvert.format": "yyyy-MM-dd HH:mm:ss",
+
+    "errors.tolerance": "all",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+
+    "sink.properties.format": "json",
+
+    "transforms.addfield.type": "com.starrocks.connector.kafka.transforms.AddOpFieldForDebeziumRecord",
+
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "true",
+    "transforms.unwrap.delete.handling.mode": "rewrite"
+  }
+}
