@@ -20,7 +20,17 @@
     "value.converter.schema.registry.url":"http://schema-registry:8081",
     "value.converter.schemas.enable": "true",
 
-    "transforms": "addfield,unwrap",
+    "transforms": "CreatedConvert,UpdatedConvert,addfield,unwrap",
+
+    "transforms.CreatedConvert.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.CreatedConvert.target.type": "Timestamp",
+    "transforms.CreatedConvert.field": "created_at",
+    "transforms.CreatedConvert.format": "yyyy-MM-dd HH:mm:ss",
+
+    "transforms.UpdatedConvert.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.UpdatedConvert.target.type": "Timestamp",
+    "transforms.UpdatedConvert.field": "updated_at",
+    "transforms.UpdatedConvert.format": "yyyy-MM-dd HH:mm:ss",
 
     "errors.tolerance": "all",
     "errors.log.enable": "true",
