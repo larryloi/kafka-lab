@@ -1,5 +1,5 @@
 {
-  "name": "ss_inventory_order_avro_01_DebeziumSrc",
+  "name": "ss_inventory_order_spec_01_DebeziumSrc_avro",
   "config": {
       "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
       "tasks.max" : "1",
@@ -12,10 +12,10 @@
       "database.names": "inventory",
       "database.encrypt": "false",
  
-      "topic.prefix": "ss_inventory_order_avro_01",
+      "topic.prefix": "ss_inventory_order_spec_avro_01",
  
       "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
-      "schema.history.internal.kafka.topic": "ss_inventory_order_avro_01.schemahistory",
+      "schema.history.internal.kafka.topic": "ss_inventory_order_spec_avro_01.schemahistory",
 
       "database.history.kafka.topic.auto.create": "true",
  
@@ -27,7 +27,7 @@
       "value.converter.schema.registry.url":"http://schema-registry:8081",
       "value.converter.schemas.enable": "false",
  
-      "table.include.list": "INV.orders",
+      "table.include.list": "INV.orders_spec",
       "include.schema.changes": "true",
       "snapshot.mode": "initial",
       "tombstones.on.delete": "true",

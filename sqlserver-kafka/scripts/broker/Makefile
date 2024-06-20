@@ -1,13 +1,13 @@
-include .broker.conf
+include topic.conf
 
-list:
+topic.list:
 	docker exec -it broker kafka-topics --list --bootstrap-server $(bootserverUrl) | grep -v "^_"
 
-show:
-	docker exec -it broker kafka-console-consumer --bootstrap-server $(bootserverUrl) --topic $(topic) --from-beginning --property print.key=true
+topic.show:
+	docker exec -it broker kafka-console-consumer --bootstrap-server $(bootserverUrl) --topic $(name) --from-beginning --property print.key=true
 
-rm:
-	docker exec -it broker kafka-topics --delete --bootstrap-server $(bootserverUrl) --topic $(topic)
+topic.rm:
+	docker exec -it broker kafka-topics --delete --bootstrap-server $(bootserverUrl) --topic $(name)
 
 %::
 	@true
