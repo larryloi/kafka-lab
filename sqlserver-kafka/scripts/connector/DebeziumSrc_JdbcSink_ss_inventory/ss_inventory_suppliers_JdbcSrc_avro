@@ -1,0 +1,16 @@
+{
+  "name": "ss_inventory_suppliers_JdbcSrc_avro",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "connection.url": "jdbc:sqlserver://rdb1.kaskade.local:1433;databaseName=inventory",
+    "connection.user": "SVC_DS_KAFKA",
+    "connection.password": "Abcd1234",
+    "table.whitelist": "inventory.INV.suppliers",
+    "mode": "incrementing",
+    "incrementing.column.name": "id",
+    "timestamp.column.name": "updated_at",
+    "topic.prefix": "ss_inventory_supplier_JdbcSrc_avro-",
+    "poll.interval.ms": 5000
+
+  }
+}

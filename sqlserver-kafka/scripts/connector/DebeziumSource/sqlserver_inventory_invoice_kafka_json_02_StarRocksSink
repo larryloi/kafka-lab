@@ -1,23 +1,21 @@
 {
-  "name": "ss_inventory_invoice_json_01_StarRocksSink",
+  "name": "sqlserver_inventory_invoice_kafka_json_02_StarRocksSink",
   "config": {
     "connector.class": "com.starrocks.connector.kafka.StarRocksSinkConnector",
     "tasks.max": "1",
-    "topics": "ss_inventory_invoice_kafka_json_02_DebeziumSrc.inventory.INV.invoices",
+    "topics": "sqlserver_inventory_invoice_kafka_json_02_DebeziumSrc.inventory.INV.invoices",
 
     "starrocks.http.url": "10.2.2.6:1030",
-    "starrocks.topic2table.map": "ss_inventory_invoice_kafka_json_02_DebeziumSrc.inventory.INV.invoices:invoices_json_01",
+    "starrocks.topic2table.map": "sqlserver_inventory_invoice_kafka_json_02_DebeziumSrc.inventory.INV.invoices:orders_kafka_json_02",
     "starrocks.username": "SVC_DS_KAFKA",
 
     "starrocks.password": "Abcd1234",
     "starrocks.database.name": "DWH",
 
     "key.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "key.converter.schema.registry.url":"http://schema-registry:8081",
     "key.converter.schemas.enable": "true",
 
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "value.converter.schema.registry.url":"http://schema-registry:8081",
     "value.converter.schemas.enable": "true",
 
     "transforms": "addfield,unwrap",

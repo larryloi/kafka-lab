@@ -1,0 +1,25 @@
+{
+  "name": "TEST01_inventory_tables_JdbcSrc_avro",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "connection.url": "jdbc:sqlserver://rdb1.kaskade.local:1433;databaseName=inventory",
+    "connection.user": "SVC_DS_KAFKA",
+    "connection.password": "Abcd1234",
+
+    "table.whitelist": "inventory.INV.orders,inventory.INV.invoices",
+    "mode": "incrementing",
+    "incrementing.column.name": "id",
+    "topic.prefix": "TEST01_inventory_tables.",
+    "poll.interval.ms": 5000,
+    "dialect.name": "SqlServerDatabaseDialect",
+
+    "key.converter":"io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url":"http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+
+    "value.converter":"io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url":"http://schema-registry:8081",
+    "value.converter.schemas.enable": "false"
+
+  }
+}

@@ -80,6 +80,7 @@ services:
     volumes:
       - ./connect-plugins:/connect-plugins
       - ./connect-smt:/connect-smt
+      - ./connect-libs:/usr/share/java/connect-libs
     environment:
       CONNECT_BOOTSTRAP_SERVERS: 'broker:29092'
       CONNECT_REST_ADVERTISED_HOST_NAME: connect

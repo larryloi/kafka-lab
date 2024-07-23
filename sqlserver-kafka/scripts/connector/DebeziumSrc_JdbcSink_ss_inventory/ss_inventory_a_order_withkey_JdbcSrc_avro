@@ -1,0 +1,19 @@
+{
+  "name": "ss_inventory_a_order_withkey_JdbcSrc_avro",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "connection.url": "jdbc:sqlserver://rdb1.kaskade.local:1433;databaseName=inventory",
+    "connection.user": "SVC_DS_KAFKA",
+    "connection.password": "Abcd1234",
+    "table.whitelist": "inventory.INV.a_orders",
+    "mode": "incrementing",
+    "incrementing.column.name": "id",
+    "topic.prefix": "ss_inventory_a_order_withkey_JdbcSrc_avro__",
+    "poll.interval.ms": 5000,
+    "transforms": "createKey,extractInt",
+    "transforms.createKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+    "transforms.createKey.fields": "order_id",
+    "transforms.extractInt.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+    "transforms.extractInt.field": "order_id"
+  }
+}

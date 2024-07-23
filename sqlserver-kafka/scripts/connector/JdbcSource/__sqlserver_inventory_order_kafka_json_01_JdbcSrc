@@ -1,0 +1,21 @@
+{
+  "name": "sqlserver_inventory_order_kafka_json_01_JdbcSrc",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+
+    "connection.url": "jdbc:sqlserver://rdb1:1433;databaseName=inventory",
+    "connection.user": "SVC_DS_KAFKA",
+    "connection.password": "Abcd1234",
+    "tasks.max": "1",
+
+    "topic.prefix": "sqlserver_inventory_order_kafka_json_01_JdbcSrc-",
+
+    "table.whitelist": "inventory.INV.orders",
+    "mode": "incrementing",
+    "incrementing.column.name": "id",
+    "poll.interval.ms": 15000,
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false"
+  }
+}

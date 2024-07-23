@@ -1,0 +1,33 @@
+{
+    "name": "my_inventory_suppliers_DebeziumSrc_avro", 
+    "config": {
+        "connector.class": "io.debezium.connector.mysql.MySqlConnector", 
+        "database.hostname": "rdb1.kaskade.local", 
+        "database.port": "3306", 
+        "database.user": "SVC_DS_KAFKA", 
+        "database.password": "Abcd1234", 
+        "database.server.id": "184054", 
+        "topic.prefix": "my_inventory_suppliers_DebeziumSrc_avro", 
+        "database.include.list": "inventory.suppliers",
+
+        "snapshot.mode": "initial",
+
+        "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
+        "schema.history.internal.kafka.topic": "my_inventory_suppliers_DebeziumSrc_avro.schemahistory",
+        "include.schema.changes": "true" ,
+
+        "key.converter":"io.confluent.connect.avro.AvroConverter",
+        "key.converter.schema.registry.url":"http://schema-registry:8081",
+        "key.converter.schemas.enable": "false",
+   
+        "value.converter":"io.confluent.connect.avro.AvroConverter",
+        "value.converter.schema.registry.url":"http://schema-registry:8081",
+        "value.converter.schemas.enable": "false",
+
+        "tombstones.on.delete": "false",
+        "time.precision.mode":"connect",
+
+        "errors.log.enable": "true",
+        "errors.log.include.messages": "true"
+    }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "starrocks_inventory_order_kafka_json_01_StarRocksink",
+  "config": {
+    "connector.class": "com.starrocks.connector.kafka.StarRocksSinkConnector",
+    "starrocks.http.url": "10.2.2.6:1030",
+    "starrocks.topic2table.map": "sqlserver_inventory_order_kafka_json_01_JdbcSrc-orders:orders_kafka_json_01",
+    "starrocks.username": "SVC_DS_KAFKA",
+
+    "starrocks.password": "Abcd1234",
+    "starrocks.database.name": "DWH",
+
+    "topics": "sqlserver_inventory_order_kafka_json_01_JdbcSrc-orders",
+
+    "starrocks.table.name": "orders_kafka_json_01",
+
+    "starrocks.load.url": "http://10.2.2.6:1030/api/DWH/order_kafka_json/_stream_load",
+    "auto.create": "true", 
+    "auto.evolve": "true",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false"
+  }
+}

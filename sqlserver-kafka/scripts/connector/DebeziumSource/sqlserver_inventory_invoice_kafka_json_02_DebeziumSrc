@@ -1,5 +1,5 @@
 {
- "name": "ss_inventory_invoice_kafka_json_02_DebeziumSrc",
+ "name": "sqlserver_inventory_invoice_kafka_json_02_DebeziumSrc",
  "config": {
     "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
     "tasks.max" : "1",
@@ -15,12 +15,12 @@
     "errors.log.enable": "true",
     "errors.log.include.messages": "true",
 
-    "topic.prefix": "ss_inventory_invoice_kafka_json_02_DebeziumSrc",
+    "topic.prefix": "sqlserver_inventory_invoice_kafka_json_02_DebeziumSrc",
 
     "database.history.kafka.topic.auto.create": "true",
 
     "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
-    "schema.history.internal.kafka.topic": "ss_inventory_invoice_kafka_json_02_DebeziumSrc.schemahistory",
+    "schema.history.internal.kafka.topic": "sqlserver_inventory_invoice_kafka_json_02_DebeziumSrc.schemahistory",
 
     "key.converter":"org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schema.registry.url":"http://schema-registry:8081",
