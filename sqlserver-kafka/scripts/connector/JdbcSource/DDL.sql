@@ -1,5 +1,47 @@
 
 
+-- Source Views
+USE inventory;
+
+	CREATE VIEW INV.vw_orders_1tbl AS
+	SELECT 
+    id,
+    order_id,
+	supplier_id,
+	item_id,
+	[status],
+	qty,
+	net_price,
+	qty * net_price AS ttl_price,
+	issued_at,
+	completed_at,
+	created_at
+	FROM inventory.INV.orders;
+
+
+
+USE inventory;
+
+CREATE VIEW INV.vw_orders_demo00_vehicle AS
+SELECT o.id
+  , o.order_id
+  , o.supplier_id
+  , s.name AS supplier
+  , o.item_id
+  , o.status
+  , o.qty
+  , o.net_price
+  , o.qty * o.net_price AS ttl_price
+  , issued_at
+  , JSON_VALUE(o.spec, '$.spec.Year') AS Year
+  , JSON_VALUE(o.spec, '$.spec.Make') AS Make
+  , JSON_VALUE(o.spec, '$.spec.Model') AS Model
+  , JSON_VALUE(o.spec, '$.spec.Category') AS Category
+  FROM INV.orders_demo00 o
+  JOIN INV.suppliers s ON s.id = o.supplier_id
+WHERE JSON_VALUE(o.spec, '$.type') = 'vehicle';
+
+
 
 --- Destination table in StarRocks
 USE DWH;
@@ -26,3 +68,8 @@ PROPERTIES (
 "in_memory" = "false",
 "storage_format" = "DEFAULT"
 );
+
+
+
+
+----
