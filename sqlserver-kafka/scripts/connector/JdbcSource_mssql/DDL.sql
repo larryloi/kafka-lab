@@ -70,6 +70,47 @@ PROPERTIES (
 );
 
 
+CREATE TABLE `vw_order_cp_avro_01_by_id_query` (
+  `id` BIGINT NOT NULL COMMENT "",
+  `order_id` VARCHAR(36) NOT NULL COMMENT "",
+  `supplier_id` INT NOT NULL COMMENT "",
+  `item_id` INT NOT NULL COMMENT "",
+  `status` VARCHAR(20) NOT NULL COMMENT "",
+  `qty` INT NOT NULL COMMENT "",
+  `net_price` INT NOT NULL COMMENT "",
+  `ttl_price` INT COMMENT "",
+  `issued_at` DATETIME NOT NULL COMMENT "",
+  `completed_at` DATETIME COMMENT "",
+  `created_at` DATETIME NOT NULL COMMENT ""
+) 
+  PRIMARY KEY(`id`)
+COMMENT "OLAP"
+DISTRIBUTED BY HASH(`id`) BUCKETS 10
+PROPERTIES (
+"replication_num" = "1",
+"in_memory" = "false",
+"storage_format" = "DEFAULT"
+);
 
 
+CREATE TABLE order_cp_avro_01_by_id_query (
+  `id` BIGINT NOT NULL COMMENT "",
+  `order_id` VARCHAR(36) NOT NULL COMMENT "",
+  `supplier_id` INT NOT NULL COMMENT "",
+  `item_id` INT NOT NULL COMMENT "",
+  `status` VARCHAR(20) NOT NULL COMMENT "",
+  `qty` INT NOT NULL COMMENT "",
+  `net_price` INT NOT NULL COMMENT "",
+  `issued_at` DATETIME NOT NULL COMMENT "",
+  `completed_at` DATETIME COMMENT "",
+  `created_at` DATETIME NOT NULL COMMENT ""
+) 
+  PRIMARY KEY(`id`)
+COMMENT "OLAP"
+DISTRIBUTED BY HASH(`id`) BUCKETS 10
+PROPERTIES (
+"replication_num" = "1",
+"in_memory" = "false",
+"storage_format" = "DEFAULT"
+);
 ----

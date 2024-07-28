@@ -7,7 +7,7 @@
 
     "starrocks.http.url": "10.2.2.6:1030",
 
-    "starrocks.topic2table.map": "ss_inventoryP_invoice_avro_01.inventory.INV.invoices:invoices_avro_01",
+    "starrocks.topic2table.map": "ss_inventory_invoice_avro_01.inventory.INV.invoices:invoices_avro_01",
 
     "starrocks.username": "SVC_DS_KAFKA",
 
