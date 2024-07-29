@@ -6,6 +6,9 @@ list:
   jq '. | to_entries[] | [ .value.info.type, .key, .value.status.connector.state,.value.status.tasks[].state, .value.info.config."connector.class"] |join(":|:")' | \
   column -s : -t| sed 's/\"//g'| sort
 
+list.one:
+	curl -s "http://$(baseUrl)/$(objUrl)/${name}/status"| jq -c -M '[.name,.connector.state,.tasks[].state]|join(":|:")'
+
 up:
 	CONN_FILE=$(shell pwd)/${name}; \
 	CONN=$$(cat $${CONN_FILE}); \
@@ -25,3 +28,4 @@ plugins:
 
 config:
 	curl -X GET "http://${baseUrl}/${objUrl}/${name}/config"| jq -S .
+
