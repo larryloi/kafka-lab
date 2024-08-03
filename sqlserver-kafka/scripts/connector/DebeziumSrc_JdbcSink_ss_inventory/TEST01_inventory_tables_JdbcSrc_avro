@@ -10,7 +10,7 @@
     "mode": "incrementing",
     "incrementing.column.name": "id",
     "topic.prefix": "TEST01_inventory_tables.",
-    "poll.interval.ms": 5000,
+    "poll.interval.ms": 15000,
     "dialect.name": "SqlServerDatabaseDialect",
 
     "key.converter":"io.confluent.connect.avro.AvroConverter",

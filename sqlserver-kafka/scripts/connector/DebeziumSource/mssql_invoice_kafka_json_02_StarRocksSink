@@ -1,0 +1,37 @@
+{
+  "name": "mssql_invoice_kafka_json_02_StarRocksSink",
+  "config": {
+    "connector.class": "com.starrocks.connector.kafka.StarRocksSinkConnector",
+    "tasks.max": "1",
+    "topics": "mssql_invoice_kafka_json_02_DebeziumSrc.inventory.INV.invoices",
+
+    "starrocks.http.url": "10.2.2.6:1030",
+    "starrocks.topic2table.map": "mssql_invoice_kafka_json_02_DebeziumSrc.inventory.INV.invoices:orders_kafka_json_02",
+    "starrocks.username": "SVC_DS_KAFKA",
+
+    "starrocks.password": "Abcd1234",
+    "starrocks.database.name": "DWH",
+
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "true",
+
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "true",
+
+    "transforms": "addfield,unwrap",
+
+    "errors.tolerance": "all",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+
+    "sink.properties.format": "json",
+    "sink.properties.strip_outer_array": "true",
+
+    "transforms.addfield.type": "com.starrocks.connector.kafka.transforms.AddOpFieldForDebeziumRecord",
+
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "true",
+    "transforms.unwrap.delete.handling.mode": "rewrite"
+
+  }
+}

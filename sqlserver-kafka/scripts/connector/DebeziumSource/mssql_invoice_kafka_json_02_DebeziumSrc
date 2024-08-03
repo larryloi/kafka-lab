@@ -1,9 +1,9 @@
 {
- "name": "ss_inventory_invoice_kafka_json_01_DebeziumSrc",
+ "name": "mssql_invoice_kafka_json_02_DebeziumSrc",
  "config": {
     "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
     "tasks.max" : "1",
-    "poll.interval.ms": "15000",
+    "poll.interval.ms": "10000",
 
     "database.hostname" : "rdb1.kaskade.local",
     "database.port" : "1433",
@@ -15,12 +15,12 @@
     "errors.log.enable": "true",
     "errors.log.include.messages": "true",
 
-    "topic.prefix": "ss_inventory_invoice_kafka_json_01_DebeziumSrc",
+    "topic.prefix": "mssql_invoice_kafka_json_02_DebeziumSrc",
 
     "database.history.kafka.topic.auto.create": "true",
 
     "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
-    "schema.history.internal.kafka.topic": "ss_inventory_invoice_kafka_json_01_DebeziumSrc.schemahistory",
+    "schema.history.internal.kafka.topic": "mssql_invoice_kafka_json_02_DebeziumSrc.schemahistory",
 
     "key.converter":"org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schema.registry.url":"http://schema-registry:8081",
@@ -32,7 +32,7 @@
 
     "table.include.list": "INV.invoices",
     "include.schema.changes": "true",
-    "snapshot.mode": "initial",
+    "snapshot.mode": "schema_only",
 
     "tombstones.on.delete": "false",
     "time.precision.mode":"connect"

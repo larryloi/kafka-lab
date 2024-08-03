@@ -9,6 +9,6 @@
     "mode": "incrementing",
     "incrementing.column.name": "id",
     "topic.prefix": "ss_inventory_a_order_nokey_JdbcSrc_avro__",
-    "poll.interval.ms": 5000
+    "poll.interval.ms": 15000
   }
 }

@@ -1,0 +1,37 @@
+{
+  "name": "mssql_INV_cp_json_01_JdbcSrc",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+
+    "connection.url": "jdbc:sqlserver://rdb1:1433;databaseName=inventory",
+    "connection.user": "SVC_DS_KAFKA",
+    "connection.password": "Abcd1234",
+    "tasks.max": "1",
+
+    "topic.prefix": "mssql_INV_cp_json_01_JdbcSrc.",
+    "topic.creation.enable": true,
+    "topic.creation.default.replication.factor": 1,
+    "topic.creation.default.partitions": 1,
+
+    "table.whitelist": "inventory.INV.orders_demo00,inventory.INV.orders",
+    "numeric.mapping": "best_fit",
+    "mode": "incrementing",
+    "incrementing.column.name": "id",
+    "timestamp.column.name": "issued_at",
+    "table.types": "TABLE",
+
+    "dialect.name": "SqlServerDatabaseDialect",
+    "poll.interval.ms": 15000,
+    "batch.max.rows": 100,
+
+    "key.converter": "io.confluent.connect.json.JsonSchemaConverter",
+    "key.converter.schema.registry.url":"http://schema-registry:8081",
+    "key.converter.schemas.enable": "true",
+
+    "value.converter": "io.confluent.connect.json.JsonSchemaConverter",
+    "value.converter.schema.registry.url":"http://schema-registry:8081",
+    "value.converter.schemas.enable": "false"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "mssql_INV_cp_avro_01__orders__StarRocksSink",
+  "config": {
+    "connector.class": "com.starrocks.connector.kafka.StarRocksSinkConnector",
+    "tasks.max": "1",
+    "topics": "mssql_INV_cp_avro_01_JdbcSrc.orders",
+
+    "starrocks.http.url": "10.2.2.6:1030",
+
+    "starrocks.topic2table.map": "mssql_INV_cp_avro_01_JdbcSrc.orders:cp_avro_01__orders",
+
+    "starrocks.username": "SVC_DS_KAFKA",
+    "starrocks.password": "Abcd1234",
+    "starrocks.database.name": "DWH",
+
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url":"http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url":"http://schema-registry:8081",
+    "value.converter.schemas.enable": "false",
+
+    "sink.properties.strip_outer_array": "true",
+
+    "auto.create": "true",
+    "insert.mode": "insert",
+    "pk.mode": "record_key",
+    "pk.fields": "id",
+    "table.name.format": "DWH.cp_avro_01__orders",
+
+    "value.converter.transforms": "InsertTimestampToDatetime",
+
+    "transforms.InsertTimestampToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.InsertTimestampToDatetime.target.type": "Timestamp",
+    "transforms.InsertTimestampToDatetime.field": "issued_at",
+    "transforms.InsertTimestampToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+
+    "errors.tolerance": "all",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true"
+  }
+}

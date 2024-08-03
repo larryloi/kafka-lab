@@ -1,0 +1,34 @@
+{
+  "name": "mssql_order_cp_avro_01_by_id_query_StarRocksSink",
+  "config": {
+    "connector.class": "com.starrocks.connector.kafka.StarRocksSinkConnector",
+    "tasks.max": "1",
+    "topics": "mssql_order_cp_avro_01_by_id_query_JdbcSrc",
+
+    "starrocks.http.url": "10.2.2.6:1030",
+
+    "starrocks.topic2table.map": "mssql_order_cp_avro_01_by_id_query_JdbcSrc:order_cp_avro_01_by_id_query",
+
+    "starrocks.username": "SVC_DS_KAFKA",
+    "starrocks.password": "Abcd1234",
+    "starrocks.database.name": "DWH",
+
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url":"http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url":"http://schema-registry:8081",
+    "value.converter.schemas.enable": "false",
+
+    "auto.create": "true",
+    "insert.mode": "insert",
+    "pk.mode": "record_key",
+    "pk.fields": "id",
+    "table.name.format": "DWH.mssql_order_cp_avro_01_by_id_query",
+
+    "errors.tolerance": "all",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true"
+  }
+}

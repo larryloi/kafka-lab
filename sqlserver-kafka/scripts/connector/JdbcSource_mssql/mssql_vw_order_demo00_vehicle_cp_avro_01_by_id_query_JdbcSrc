@@ -1,0 +1,37 @@
+{
+  "name": "mssql_vw_order_demo00_vehicle_cp_avro_01_by_id_query_JdbcSrc",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+
+    "connection.url": "jdbc:sqlserver://rdb1:1433;databaseName=inventory",
+    "connection.user": "SVC_DS_KAFKA",
+    "connection.password": "Abcd1234",
+    "tasks.max": "1",
+
+    "topic.prefix": "mssql_vw_order_demo00_vehicle_cp_avro_01_by_id_query_JdbcSrc",
+    "topic.creation.enable": true,
+    "topic.creation.default.replication.factor": 1,
+    "topic.creation.default.partitions": 1,
+    
+    "numeric.mapping": "best_fit",
+    "mode": "incrementing",
+    "incrementing.column.name": "id",
+    "timestamp.column.name": "issued_at",
+    "table.types": "VIEW",
+    "query": "SELECT * FROM ( SELECT id,order_id,supplier,[status],qty,ttl_price,issued_at, Year, Make, Model, Category FROM INV.vw_orders_demo00_vehicle ) v ",
+
+    "dialect.name": "SqlServerDatabaseDialect",
+    "poll.interval.ms": 15000,
+    "batch.max.rows": 100,
+
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url":"http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url":"http://schema-registry:8081",
+    "value.converter.schemas.enable": "false"
+  }
+}

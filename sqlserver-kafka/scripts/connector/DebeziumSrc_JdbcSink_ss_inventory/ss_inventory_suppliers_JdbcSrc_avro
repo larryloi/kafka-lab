@@ -10,7 +10,7 @@
     "incrementing.column.name": "id",
     "timestamp.column.name": "updated_at",
     "topic.prefix": "ss_inventory_supplier_JdbcSrc_avro-",
-    "poll.interval.ms": 5000
+    "poll.interval.ms": 15000
 
   }
 }

@@ -20,7 +20,7 @@
     "connection.url": "jdbc:sqlserver://centos7:1433;databaseName=STG",
     "connection.user": "schematic",
     "connection.password": "schematic123",
-    "poll.interval.ms": "10000",
+    "poll.interval.ms": "15000",
     "tasks.max": "1",
 
     "dialect.name": "SqlServerDatabaseDialect",

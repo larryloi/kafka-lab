@@ -10,7 +10,7 @@
     "incrementing.column.name": "id",
     "timestamp.column.name": "updated_at",
     "topic.prefix": "ss_inventory_order_spec_JdbcSrc_json-",
-    "poll.interval.ms": 5000,
+    "poll.interval.ms": 15000,
     "transforms": "createKey,extractInt",
     "transforms.createKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
     "transforms.createKey.fields": "order_id",

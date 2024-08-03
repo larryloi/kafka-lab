@@ -6,6 +6,12 @@ list:
   jq '. | to_entries[] | [ .value.info.type, .key, .value.status.connector.state,.value.status.tasks[].state, .value.info.config."connector.class"] |join(":|:")' | \
   column -s : -t| sed 's/\"//g'| sort
 
+#list:
+#	curl -X GET http://$(baseUrl)/$(objUrl)/| jq 'sort'
+#	curl -s "http://$(baseUrl)/$(objUrl)?expand=info&expand=status" | \
+#  jq '. | to_entries[] | [ .key, .value.info.type,  .value.status.connector.state,.value.status.tasks[].state, .value.info.config."connector.class"] |join(":|:")' | \
+#  column -s : -t| sed 's/\"//g'| sort
+
 list.one:
 	curl -s "http://$(baseUrl)/$(objUrl)/${name}/status"| jq -c -M '[.name,.connector.state,.tasks[].state]|join(":|:")'
 

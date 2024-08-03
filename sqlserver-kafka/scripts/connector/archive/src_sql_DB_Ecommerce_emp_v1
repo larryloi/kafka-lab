@@ -19,7 +19,7 @@ curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" 
     "value.converter.schema.registry.url":"http://schema-registry:8081",
 
     "topic.prefix": "v1",
-    "poll.interval.ms": "5000",
+    "poll.interval.ms": "15000",
     "tasks.max": "1",
 
     "table.include.list": "dbo.emp",
