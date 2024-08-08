@@ -27,10 +27,36 @@
     "value.converter.schema.registry.url": "http://schema-registry:8081",
     "value.converter.schemas.enable": "false",
 
-    "transforms": "unwrap",
+    "transforms": "unwrap,CreatedAtToDatetime,UpdatedAtToDatetime,SourceTsToDatetime,IssuedAtToDatetime,CompletedAtToDatetime",
     "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
     "transforms.unwrap.add.fields": "op,table,lsn,source.ts_ms,server_id,file,pos",
     "transforms.unwrap.add.headers": "db",
-    "transforms.unwrap.delete.handling.mode": "rewrite"
+    "transforms.unwrap.delete.handling.mode": "rewrite",
+
+    "transforms.IssuedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.IssuedAtToDatetime.field": "issued_at",
+    "transforms.IssuedAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.IssuedAtToDatetime.target.type": "Timestamp",
+
+    "transforms.CompletedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.CompletedAtToDatetime.field": "completed_at",
+    "transforms.CompletedAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.CompletedAtToDatetime.target.type": "Timestamp",
+
+    "transforms.CreatedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.CreatedAtToDatetime.field": "created_at",
+    "transforms.CreatedAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.CreatedAtToDatetime.target.type": "Timestamp",
+
+    "transforms.UpdatedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.UpdatedAtToDatetime.field": "updated_at",
+    "transforms.UpdatedAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.UpdatedAtToDatetime.target.type": "Timestamp",
+
+    "transforms.SourceTsToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.SourceTsToDatetime.field": "__source_ts_ms",
+    "transforms.SourceTsToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.SourceTsToDatetime.target.type": "Timestamp"
+
   }
 }
