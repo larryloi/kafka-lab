@@ -15,6 +15,28 @@ CREATE TABLE `suppliers` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 
+CREATE TABLE `my_orders` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `order_id` varchar(36) NOT NULL,
+  `supplier_id` int NOT NULL,
+  `item_id` int NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `qty` int NOT NULL,
+  `net_price` int NOT NULL,
+  `tax_rate` float NOT NULL,
+  `issued_at` datetime NOT NULL,
+  `completed_at` datetime DEFAULT NULL,
+  `spec` json DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `IDX_my_orders_order_id` (`order_id`),
+  KEY `IDX_my_orders_issued_at` (`issued_at`),
+  KEY `IDX_my_orders_completed_at` (`completed_at`),
+  KEY `IDX_my_orders_created_at` (`created_at`),
+  KEY `IDX_my_orders_updated_at` (`updated_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
 
 
 
