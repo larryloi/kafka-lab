@@ -18,6 +18,7 @@
     "pk.mode": "record_value",
     "pk.fields": "id",
     "fields.whitelist": "id,order_id,supplier,status,qty,ttl_price,issued_at, Year, Make, Model, Category",
+    "selectMethod": "cursor",
 
     "key.converter": "io.confluent.connect.avro.AvroConverter",
     "key.converter.schema.registry.url":"http://schema-registry:8081",

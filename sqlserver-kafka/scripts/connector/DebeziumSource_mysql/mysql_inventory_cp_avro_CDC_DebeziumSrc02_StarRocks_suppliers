@@ -1,0 +1,56 @@
+{
+  "name": "mysql_inventory_cp_avro_CDC_DebeziumSrc02_StarRocks_suppliers",
+  "config": {
+    "connector.class": "com.starrocks.connector.kafka.StarRocksSinkConnector",
+    "tasks.max": "1",
+    "topics": "mysql_inventory_cp_avro_CDC_DebeziumSrc02_suppliers",
+
+    "starrocks.http.url": "10.2.2.6:1030",
+
+    "starrocks.topic2table.map": "mysql_inventory_cp_avro_CDC_DebeziumSrc02_suppliers:mysql_inventory_cp_avro_CDC_DebeziumSrc02_StarRocks_suppliers",
+
+    "starrocks.username": "SVC_DS_KAFKA",
+    "starrocks.password": "Abcd1234",
+    "starrocks.database.name": "DWH",
+
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url":"http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url":"http://schema-registry:8081",
+    "value.converter.schemas.enable": "false",
+
+    "sink.properties.strip_outer_array": "true",
+
+
+    "auto.create": "true",
+    "insert.mode": "upsert",
+    "pk.mode": "record_key",
+    "pk.fields": "id",
+    "table.name.format": "DWH.mysql_inventory_cp_avro_CDC_DebeziumSrc02_StarRocks_suppliers",
+
+    "errors.tolerance": "all",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+    "max_filter_ratio": "0.1",
+
+    "transforms": "addfield,unwrap,CreatedAtToDatetime,UpdatedAtToDatetime",
+
+    "transforms.addfield.type": "com.starrocks.connector.kafka.transforms.AddOpFieldForDebeziumRecord",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "true",
+    "transforms.unwrap.delete.handling.mode": "rewrite",
+
+    "transforms.CreatedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.CreatedAtToDatetime.field": "created_at",
+    "transforms.CreatedAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.CreatedAtToDatetime.target.type": "string",
+
+    "transforms.UpdatedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.UpdatedAtToDatetime.field": "updated_at",
+    "transforms.UpdatedAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.UpdatedAtToDatetime.target.type": "string"
+
+  }
+}

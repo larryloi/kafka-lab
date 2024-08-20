@@ -10,7 +10,7 @@
     "connection.password": "Abcd1234",
     "tasks.max": "1",
 
-    "topic.prefix": "mysql_inventory_cp_avro_JdbcSrc01.",
+    "topic.prefix": "mysql_inventory_cp_avro_JdbcSrc01_",
     "topic.creation.enable": true,
     "topic.creation.default.replication.factor": 1,
     "topic.creation.default.partitions": 1,

@@ -21,6 +21,7 @@
     "incrementing.column.name": "id",
     "timestamp.column.name": "issued_at",
     "table.types": "TABLE",
+    "selectMethod": "cursor",
 
     "dialect.name": "SqlServerDatabaseDialect",
     "poll.interval.ms": 15000,

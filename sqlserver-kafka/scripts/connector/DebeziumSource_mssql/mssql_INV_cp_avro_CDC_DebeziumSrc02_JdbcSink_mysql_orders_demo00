@@ -1,19 +1,19 @@
 {
-  "name": "mysql_inventory_cp_avro_CDC_DebeziumSrc00_JdbcSink_mssql_my_orders",
+  "name": "mssql_INV_cp_avro_CDC_DebeziumSrc02_JdbcSink_mysql_orders_demo00",
   "config": {
     "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
 
-    "connection.url": "jdbc:sqlserver://rdb1:1433;databaseName=DWH",
+    "connection.url": "jdbc:mysql://rdb1.kaskade.local:3306/DWH",
     "connection.user": "SVC_DS_KAFKA",
     "connection.password": "Abcd1234",
     "tasks.max": "1",
 
-    "topics": "mysql_inventory_cp_avro_CDC_DebeziumSrc00.my_orders",
+    "topics": "mssql_INV_cp_avro_CDC_DebeziumSrc02_INV_orders_demo00",
 
     "auto.create": true,
     "auto.evolve": true,
 
-    "table.name.format": "DWH.DW_ETL.mysql_inventory_cp_avro_CDC_DebeziumSrc00_JdbcSink_mssql_my_orders",
+    "table.name.format": "DWH.mssql_INV_cp_avro_CDC_DebeziumSrc02_JdbcSink_mysql_orders_demo00",
     "insert.mode": "upsert",
     "pk.mode": "record_key",
     "pk.fields": "id",
@@ -27,21 +27,11 @@
     "value.converter.schema.registry.url": "http://schema-registry:8081",
     "value.converter.schemas.enable": "false",
 
-    "transforms": "unwrap,CreatedAtToDatetime,UpdatedAtToDatetime,SourceTsToDatetime,IssuedAtToDatetime,CompletedAtToDatetime",
+    "transforms": "unwrap,CreatedAtToDatetime,UpdatedAtToDatetime,SourceTsToDatetime",
     "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
     "transforms.unwrap.add.fields": "op,table,lsn,source.ts_ms,server_id,file,pos",
     "transforms.unwrap.add.headers": "db",
     "transforms.unwrap.delete.handling.mode": "rewrite",
-
-    "transforms.IssuedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
-    "transforms.IssuedAtToDatetime.field": "issued_at",
-    "transforms.IssuedAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
-    "transforms.IssuedAtToDatetime.target.type": "Timestamp",
-
-    "transforms.CompletedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
-    "transforms.CompletedAtToDatetime.field": "completed_at",
-    "transforms.CompletedAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
-    "transforms.CompletedAtToDatetime.target.type": "Timestamp",
 
     "transforms.CreatedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
     "transforms.CreatedAtToDatetime.field": "created_at",

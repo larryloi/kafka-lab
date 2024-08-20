@@ -32,6 +32,7 @@
     "snapshot.mode": "initial",
     "tombstones.on.delete": "false",
     "time.precision.mode":"connect",
+    "selectMethod": "cursor",
 
     "errors.log.enable": "true",
     "errors.log.include.messages": "true"

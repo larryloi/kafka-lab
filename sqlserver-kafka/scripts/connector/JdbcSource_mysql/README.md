@@ -1,0 +1,5 @@
+
+### Test passed
+- mysql_inventory_cp_avro_JdbcSrc01
+- mysql_inventory_cp_avro_JdbcSrc01_StarRockSinks_suppliers
+- mysql_inventory_cp_avro_JdbcSrc01_StarRocksSink_my_orders

@@ -43,7 +43,7 @@ CREATE TABLE `my_orders` (
 --- StarRocks Destination Table
 
 
-CREATE TABLE `mysql_inventory_cp_avro_01__suppliers` (
+CREATE TABLE `mysql_inventory_cp_avro_CDC_DebeziumSrc01_suppliers` (
   `id` BIGINT NOT NULL,
   `name` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
@@ -58,7 +58,7 @@ PROPERTIES (
 "in_memory" = "false",
 "storage_format" = "DEFAULT");
 
-CREATE TABLE `mysql_inventory_cp_avro_01__suppliers` (
+CREATE TABLE `mysql_inventory_cp_avro_JdbcSrc01_suppliers` (
   `id` BIGINT NOT NULL,
   `name` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
@@ -101,6 +101,31 @@ PROPERTIES (
 );
 
 
+CREATE TABLE mysql_inventory_cp_avro_JdbcSrc01_my_orders (
+  `id` BIGINT NOT NULL COMMENT "",
+  `order_id` VARCHAR(36) NOT NULL COMMENT "",
+  `supplier_id` INT NOT NULL COMMENT "",
+  `item_id` INT NOT NULL COMMENT "",
+  `status` VARCHAR(20) NOT NULL COMMENT "",
+  `qty` INT NOT NULL COMMENT "",
+  `net_price` INT NOT NULL COMMENT "",
+  `tax_rate` FLOAT NOT NULL COMMENT "",
+  `issued_at` DATETIME NOT NULL COMMENT "",
+  `completed_at` DATETIME NOT NULL COMMENT "",
+  `spec` VARCHAR(4096) COMMENT "",
+  `created_at` DATETIME NOT NULL COMMENT "",
+  `updated_at` DATETIME NOT NULL COMMENT ""
+) 
+  PRIMARY KEY(`id`)
+COMMENT "OLAP"
+DISTRIBUTED BY HASH(`id`) BUCKETS 10
+PROPERTIES (
+"replication_num" = "1",
+"in_memory" = "false",
+"storage_format" = "DEFAULT"
+);
+
+### changed datetime column to varchar
 CREATE TABLE mysql_inventory_cp_avro__my_orders_A (
   `id` BIGINT NOT NULL COMMENT "",
   `order_id` VARCHAR(36) NOT NULL COMMENT "",
@@ -111,6 +136,7 @@ CREATE TABLE mysql_inventory_cp_avro__my_orders_A (
   `net_price` INT NOT NULL COMMENT "",
   `tax_rate` FLOAT NOT NULL COMMENT "",
   `issued_at` VARCHAR(25) COMMENT "",
+  `spec` VARCHAR(4096) COMMENT "",
   `completed_at` VARCHAR(25) COMMENT "",
   `created_at` VARCHAR(25) COMMENT ""
 ) 
@@ -121,4 +147,36 @@ PROPERTIES (
 "replication_num" = "1",
 "in_memory" = "false",
 "storage_format" = "DEFAULT"
+);
+
+
+CREATE TABLE mysql_inventory_cp_avro_CDC_DebeziumSrc01_JdbcSink_mssql_my_orders (
+    id BIGINT NOT NULL,
+    order_id VARCHAR NOT NULL,
+    supplier_id INT NOT NULL,
+    item_id INT NOT NULL,
+    status VARCHAR NOT NULL,
+    qty INT NOT NULL,
+    net_price INT NOT NULL,
+    tax_rate FLOAT NOT NULL,
+    issued_at DATETIME NOT NULL,
+    completed_at DATETIME NULL,
+    spec VARCHAR NULL,
+    created_at DATETIME NULL,
+    updated_at DATETIME NULL,
+    __op VARCHAR NULL,
+    __table VARCHAR NULL,
+    __source_ts_ms DATETIME NULL,
+    __server_id BIGINT NULL,
+    __file VARCHAR NULL,
+    __pos BIGINT NULL,
+    __deleted VARCHAR NULL,
+    PRIMARY KEY (id)
+) ENGINE=OLAP
+DUPLICATE KEY(id)
+DISTRIBUTED BY HASH(id) BUCKETS 10
+PROPERTIES (
+    "replication_num" = "3",
+    "in_memory" = "false",
+    "storage_format" = "DEFAULT"
 );

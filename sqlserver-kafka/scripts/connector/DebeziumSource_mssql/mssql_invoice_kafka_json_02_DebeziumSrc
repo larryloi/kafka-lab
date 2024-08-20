@@ -16,11 +16,12 @@
     "errors.log.include.messages": "true",
 
     "topic.prefix": "mssql_invoice_kafka_json_02_DebeziumSrc",
+    "topic.delimiter": "_",
 
     "database.history.kafka.topic.auto.create": "true",
 
     "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
-    "schema.history.internal.kafka.topic": "mssql_invoice_kafka_json_02_DebeziumSrc.schemahistory",
+    "schema.history.internal.kafka.topic": "mssql_invoice_kafka_json_02_DebeziumSrc_schemahistory",
 
     "key.converter":"org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schema.registry.url":"http://schema-registry:8081",
@@ -33,9 +34,16 @@
     "table.include.list": "INV.invoices",
     "include.schema.changes": "true",
     "snapshot.mode": "schema_only",
+    "selectMethod": "cursor",
 
     "tombstones.on.delete": "false",
-    "time.precision.mode":"connect"
+    "time.precision.mode":"connect",
+
+    "transforms": "dropPrefix",
+
+    "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.dropPrefix.regex":"mssql_invoice_kafka_json_02_DebeziumSrc.inventory.(.*)",
+    "transforms.dropPrefix.replacement":"mssql_invoice_kafka_json_02_DebeziumSrc_$1"
 
      }
  }

@@ -21,6 +21,7 @@
     "timestamp.column.name": "issued_at",
     "table.types": "VIEW",
     "query": "SELECT * FROM ( SELECT id,order_id,supplier,[status],qty,ttl_price,issued_at, Year, Make, Model, Category FROM INV.vw_orders_demo00_vehicle ) v ",
+    "selectMethod": "cursor",
 
     "dialect.name": "SqlServerDatabaseDialect",
     "poll.interval.ms": 15000,

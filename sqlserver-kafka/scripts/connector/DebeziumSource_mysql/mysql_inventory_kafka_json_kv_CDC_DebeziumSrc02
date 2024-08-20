@@ -1,0 +1,53 @@
+{
+  "name": "mysql_inventory_kafka_json_kv_CDC_DebeziumSrc02",
+  "config": {
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+
+    "tasks.max" : "1",
+    "poll.interval.ms": "15000",
+
+    "database.hostname": "rdb1.kaskade.local",
+    "database.port": "3306",
+    "database.user": "SVC_DS_KAFKA",
+    "database.password": "Abcd1234",
+    "database.server.id": "184060",
+    "database.server.name": "inventory",
+    "database.include.list": "inventory",
+    "database.encrypt": "false",
+    "table.include.list": "inventory.my_orders",
+
+    "topic.prefix": "mysql_inventory_kafka_json_kv_CDC_DebeziumSrc02",
+    "topic.creation.enable": "true",
+    "topic.creation.default.replication.factor": 1,  
+    "topic.creation.default.partitions": 1,  
+    "topic.creation.default.cleanup.policy": "compact",  
+    "topic.creation.default.compression.type": "lz4",
+    "topic.delimiter": "_",
+
+    "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
+    "schema.history.internal.kafka.topic": "mysql_inventory_kafka_json_kv_CDC_DebeziumSrc02_schemahistory",
+
+    "database.history.kafka.topic.auto.create": "true",
+
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "true",
+
+    "value.converter":"org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "true",
+
+    "include.schema.changes": "true",
+    "snapshot.mode": "schema_only_recovery",
+    "tombstones.on.delete": "true",
+    "selectMethod": "cursor",
+    
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+
+    "transforms": "dropPrefix",
+
+    "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.dropPrefix.regex":"mysql_inventory_kafka_json_kv_CDC_DebeziumSrc02.inventory.(.*)",
+    "transforms.dropPrefix.replacement":"mysql_inventory_kafka_json_kv_CDC_DebeziumSrc02_$1"
+  }
+}
+

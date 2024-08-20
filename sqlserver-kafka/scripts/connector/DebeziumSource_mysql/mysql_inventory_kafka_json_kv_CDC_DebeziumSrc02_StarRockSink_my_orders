@@ -1,44 +1,55 @@
 {
-  "name": "mysql_inventory_cp_avro_JdbcSrc01_StarRocksSink__my_orders",
+  "name": "mysql_inventory_kafka_json_kv_CDC_DebeziumSrc02_StarRockSink_my_orders",
   "config": {
     "connector.class": "com.starrocks.connector.kafka.StarRocksSinkConnector",
     "tasks.max": "1",
-    "topics": "mysql_inventory_cp_avro_JdbcSrc01.my_orders",
+    "topics": "mysql_inventory_kafka_json_kv_CDC_DebeziumSrc02_my_orders",
 
     "starrocks.http.url": "10.2.2.6:1030",
 
-    "starrocks.topic2table.map": "mysql_inventory_cp_avro_JdbcSrc01.my_orders:mysql_inventory_cp_avro__my_orders",
+    "starrocks.topic2table.map": "mysql_inventory_kafka_json_kv_CDC_DebeziumSrc02_my_orders:mysql_inventory_kafka_json_kv_CDC_DebeziumSrc02_my_orders",
 
     "starrocks.username": "SVC_DS_KAFKA",
     "starrocks.password": "Abcd1234",
     "starrocks.database.name": "DWH",
 
-    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schema.registry.url":"http://schema-registry:8081",
-    "key.converter.schemas.enable": "false",
+    "key.converter.schemas.enable": "true",
 
-    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
     "value.converter.schema.registry.url":"http://schema-registry:8081",
-    "value.converter.schemas.enable": "false",
-
-    "sink.properties.strip_outer_array": "true",
+    "value.converter.schemas.enable": "true",
 
     "auto.create": "true",
     "insert.mode": "insert",
     "pk.mode": "record_key",
     "pk.fields": "id",
-    "table.name.format": "DWH.mysql_inventory_cp_avro__my_orders",
+    "table.name.format": "DWH.mysql_inventory_kafka_json_kv_CDC_DebeziumSrc02_my_orders",
+    "sink.properties.strip_outer_array": "true",
+    "sink.properties.format": "json",
+
 
     "errors.tolerance": "all",
     "errors.log.enable": "true",
     "errors.log.include.messages": "true",
 
-    "transforms": "CreatedAtToDatetime,IssuedAtToDatetime,CompletedAtToDatetime",
+    "transforms": "unwrap,addfield,CreatedAtToDatetime,UpdatedAtToDatetime,IssuedAtToDatetime,CompletedAtToDatetime",
+
+    "transforms.addfield.type": "com.starrocks.connector.kafka.transforms.AddOpFieldForDebeziumRecord",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "true",
+    "transforms.unwrap.delete.handling.mode": "rewrite",
 
     "transforms.CreatedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
     "transforms.CreatedAtToDatetime.field": "created_at",
     "transforms.CreatedAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
     "transforms.CreatedAtToDatetime.target.type": "string",
+
+    "transforms.UpdatedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.UpdatedAtToDatetime.field": "updated_at",
+    "transforms.UpdatedAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.UpdatedAtToDatetime.target.type": "string",
 
     "transforms.IssuedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
     "transforms.IssuedAtToDatetime.field": "issued_at",
@@ -49,6 +60,7 @@
     "transforms.CompletedAtToDatetime.field": "completed_at",
     "transforms.CompletedAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
     "transforms.CompletedAtToDatetime.target.type": "string"
+
 
   }
 }

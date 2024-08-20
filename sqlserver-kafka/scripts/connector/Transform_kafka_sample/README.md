@@ -35,3 +35,20 @@ mysql_inventory_cp_avro_TimestampConverter_JdbcSrc
     "transforms.UpdatedAtToDatetime.target.type": "string",
 }
 ```
+
+
+### Filter
+```json
+{
+  "transforms": "unwrap, Filter",
+  "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+  "transforms.Filter.type": "io.debezium.transforms.Filter",
+  "transforms.Filter.negate": "false",
+  "transforms.Filter.predicate": "isTableTopic",
+  "transforms.Filter.condition": "value.PropertyID == 2",
+  "transforms.Filter.language": "jsr223.groovy",
+  "predictes": "isTableTopic",
+  "predicates.isTableTopic.type": "org.apache.kafka.connect.transforms.predicates.TopicNameMatches",
+  "predicates.isTableTopic.pattern": "SCL_DW_CMS_REM_VEN_RPT_ODS_DebeziumSrc01_Reporting_ODS_TG_PatronRating"
+}
+```

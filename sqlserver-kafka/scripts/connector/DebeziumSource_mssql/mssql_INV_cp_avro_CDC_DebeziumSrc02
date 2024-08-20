@@ -1,5 +1,5 @@
 {
-  "name": "mssql_order_cp_avro_01_DebeziumSrc",
+  "name": "mssql_INV_cp_avro_CDC_DebeziumSrc02",
   "config": {
       "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
       "tasks.max" : "1",
@@ -12,27 +12,35 @@
       "database.names": "inventory",
       "database.encrypt": "false",
  
-      "topic.prefix": "mssql_order_cp_avro_01_DebeziumSrc",
+      "topic.prefix": "mssql_INV_cp_avro_CDC_DebeziumSrc02",
+      "topic.delimiter": "_",
  
       "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
-      "schema.history.internal.kafka.topic": "mssql_order_cp_avro_01_DebeziumSrc.schemahistory",
+      "schema.history.internal.kafka.topic": "mssql_INV_cp_avro_CDC_DebeziumSrc02_schemahistory",
 
       "database.history.kafka.topic.auto.create": "true",
  
       "key.converter": "io.confluent.connect.avro.AvroConverter",
-      "key.converter.schema.registry.url":"http://schema-registry:8081",
+      "key.converter.schema.registry.url": "http://schema-registry:8081",
       "key.converter.schemas.enable": "false",
  
       "value.converter": "io.confluent.connect.avro.AvroConverter",
-      "value.converter.schema.registry.url":"http://schema-registry:8081",
+      "value.converter.schema.registry.url": "http://schema-registry:8081",
       "value.converter.schemas.enable": "false",
  
-      "table.include.list": "INV.orders",
+      "table.include.list": "INV.orders_demo00,INV.invoices",
       "include.schema.changes": "true",
       "snapshot.mode": "initial",
       "tombstones.on.delete": "true",
+      "selectMethod": "cursor",
  
       "errors.log.enable": "true",
-      "errors.log.include.messages": "true"
+      "errors.log.include.messages": "true",
+
+      "transforms": "dropPrefix",
+
+      "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
+      "transforms.dropPrefix.regex":"mssql_INV_cp_avro_CDC_DebeziumSrc02.inventory.(.*)",
+      "transforms.dropPrefix.replacement":"mssql_INV_cp_avro_CDC_DebeziumSrc02_$1"
       }
   }
