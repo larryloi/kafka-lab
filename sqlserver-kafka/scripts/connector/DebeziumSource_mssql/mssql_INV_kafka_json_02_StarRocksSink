@@ -1,12 +1,12 @@
 {
-  "name": "mssql_invoice_kafka_json_02_StarRocksSink",
+  "name": "mssql_INV_kafka_json_02_StarRocksSink",
   "config": {
     "connector.class": "com.starrocks.connector.kafka.StarRocksSinkConnector",
     "tasks.max": "1",
-    "topics": "mssql_invoice_kafka_json_02_DebeziumSrc.inventory.INV.invoices",
+    "topics": "mssql_INV_kafka_json_02_DebeziumSrc.inventory.INV.invoices",
 
     "starrocks.http.url": "10.2.2.6:1030",
-    "starrocks.topic2table.map": "mssql_invoice_kafka_json_02_DebeziumSrc.inventory.INV.invoices:orders_kafka_json_02",
+    "starrocks.topic2table.map": "mssql_INV_kafka_json_02_DebeziumSrc.inventory.INV.invoices:orders_kafka_json_02",
     "starrocks.username": "SVC_DS_KAFKA",
 
     "starrocks.password": "Abcd1234",

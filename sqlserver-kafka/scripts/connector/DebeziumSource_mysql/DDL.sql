@@ -130,6 +130,71 @@ PROPERTIES (
 );
 
 
+CREATE TABLE mysql_inventory_cp_avro_CDC_DebeziumSrc01_my_orders_ext01 (
+  `id` BIGINT NOT NULL COMMENT "",
+  `order_id` VARCHAR(36) NOT NULL COMMENT "",
+  `supplier_id` INT NOT NULL COMMENT "",
+  `item_id` INT NOT NULL COMMENT "",
+  `status` VARCHAR(20) NOT NULL COMMENT "",
+  `qty` INT NOT NULL COMMENT "",
+  `net_price` INT NOT NULL COMMENT "",
+  `tax_rate` FLOAT NOT NULL COMMENT "",
+  `issued_at` DATETIME NOT NULL COMMENT "",
+  `completed_at` DATETIME NOT NULL COMMENT "",
+  `spec` json COMMENT "",
+  `created_at` DATETIME NOT NULL COMMENT "",
+  `updated_at` DATETIME NOT NULL COMMENT "",
+  `OP` VARCHAR(1) NULL,
+  `__table` VARCHAR(128) NULL,
+  `__source_ts_ms` DATETIME NULL,
+  `__server_id` BIGINT NULL,
+  `__file` VARCHAR(255) NULL,
+  `__pos` BIGINT NULL,
+  `__deleted` BOOLEAN NULL
+) 
+  PRIMARY KEY(`id`)
+COMMENT "OLAP"
+DISTRIBUTED BY HASH(`id`) BUCKETS 10
+PROPERTIES (
+"replication_num" = "1",
+"in_memory" = "false",
+"storage_format" = "DEFAULT"
+);
+
+
+Error: NULL value in non-nullable column '__op'. Row: [16403, '895c2c2f-50ec-4da0-aa1f-d5ef7006eba9', 96, 4, 'delivered', 400, 3640, 7.1245, 2024-08-10 07:20:04, 2024-08-10 07:20:04, "\"{\\\"type\\\": \\\"vehicle\\\", \\\"spec\\\": {\\\"Year\\\": 2018, \\\"Make\\\": \\\"BMW\\\", \\\"Model\\\": \\\"X5\\\", \\\"Category\\\": \\\"SUV\\\"}}\"", 2024-08-10 07:20:04, 2024-08-13 00:27:24, NULL, 'my_orders', NULL, 1, 'binlog.000009', 264867232, 0, NULL]
+
+CREATE TABLE mysql_inventory_cp_avro_CDC_DebeziumSrc01_my_orders_ext01 (
+  `id` BIGINT NOT NULL COMMENT "",
+  `order_id` VARCHAR(36) NOT NULL COMMENT "",
+  `supplier_id` INT NOT NULL COMMENT "",
+  `item_id` INT NOT NULL COMMENT "",
+  `status` VARCHAR(20) NOT NULL COMMENT "",
+  `qty` INT NOT NULL COMMENT "",
+  `net_price` INT NOT NULL COMMENT "",
+  `tax_rate` FLOAT NOT NULL COMMENT "",
+  `issued_at` DATETIME NOT NULL COMMENT "",
+  `completed_at` DATETIME NOT NULL COMMENT "",
+  `spec` json COMMENT "",
+  `created_at` DATETIME NOT NULL COMMENT "",
+  `updated_at` DATETIME NOT NULL COMMENT "",
+  `__op` VARCHAR(45) NULL,
+  `__table` VARCHAR(128) NULL,
+  `__source_ts_ms` DATETIME NULL,
+  `__server_id` BIGINT NULL,
+  `__file` VARCHAR(255) NULL,
+  `__pos` BIGINT NULL,
+  `__deleted` BOOLEAN NULL
+) 
+  PRIMARY KEY(`id`)
+COMMENT "OLAP"
+DISTRIBUTED BY HASH(`id`) BUCKETS 10
+PROPERTIES (
+"replication_num" = "1",
+"in_memory" = "false",
+"storage_format" = "DEFAULT"
+);
+
 
 CREATE TABLE mysql_inventory_kafka_json_k_CDC_DebeziumSrc02_my_orders (
   `id` BIGINT NOT NULL COMMENT "",

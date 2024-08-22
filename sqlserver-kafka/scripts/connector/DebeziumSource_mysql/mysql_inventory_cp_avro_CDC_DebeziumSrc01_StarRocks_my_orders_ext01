@@ -1,13 +1,13 @@
 {
-  "name": "mssql_INV_cp_avro_CDC_DebeziumSrc02_StarRockSink_orders_demo00",
+  "name": "mysql_inventory_cp_avro_CDC_DebeziumSrc01_StarRocks_my_orders_ext01",
   "config": {
     "connector.class": "com.starrocks.connector.kafka.StarRocksSinkConnector",
     "tasks.max": "1",
-    "topics": "mssql_INV_cp_avro_CDC_DebeziumSrc02_INV_orders_demo00",
+    "topics": "mysql_inventory_cp_avro_CDC_DebeziumSrc01_my_orders",
 
     "starrocks.http.url": "10.2.2.6:1030",
 
-    "starrocks.topic2table.map": "mssql_INV_cp_avro_CDC_DebeziumSrc02_INV_orders_demo00:mssql_INV_cp_avro_CDC_DebeziumSrc02_INV_orders_demo00",
+    "starrocks.topic2table.map": "mysql_inventory_cp_avro_CDC_DebeziumSrc01_my_orders:mysql_inventory_cp_avro_CDC_DebeziumSrc01_my_orders_ext01",
 
     "starrocks.username": "SVC_DS_KAFKA",
     "starrocks.password": "Abcd1234",
@@ -25,7 +25,8 @@
     "insert.mode": "insert",
     "pk.mode": "record_key",
     "pk.fields": "id",
-    "table.name.format": "DWH.mssql_INV_cp_avro_CDC_DebeziumSrc02_INV_orders_demo00",
+    "delete.enabled": "true",
+    "table.name.format": "DWH.mysql_inventory_cp_avro_CDC_DebeziumSrc01_my_orders_ext01",
     "sink.properties.strip_outer_array": "true",
     "sink.properties.format": "json",
 
@@ -33,14 +34,12 @@
     "errors.log.enable": "true",
     "errors.log.include.messages": "true",
 
-    "transforms": "unwrap,addfield,CreatedAtToDatetime,UpdatedAtToDatetime,IssuedAtToDatetime,CompletedAtToDatetime,SoursTsToDatetime,TsToDatetime",
+    "transforms": "unwrap,addfield,CreatedAtToDatetime,UpdatedAtToDatetime,IssuedAtToDatetime,CompletedAtToDatetime",
 
     "transforms.addfield.type": "com.starrocks.connector.kafka.transforms.AddOpFieldForDebeziumRecord",
     "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
-    "transforms.unwrap.add.fields": "db,schema,table,source.ts_ms,ts_ms,",
     "transforms.unwrap.drop.tombstones": "true",
     "transforms.unwrap.delete.handling.mode": "rewrite",
-    "transforms.unwrap.add.headers": "db",
 
     "transforms.CreatedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
     "transforms.CreatedAtToDatetime.field": "created_at",
@@ -60,17 +59,7 @@
     "transforms.CompletedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
     "transforms.CompletedAtToDatetime.field": "completed_at",
     "transforms.CompletedAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
-    "transforms.CompletedAtToDatetime.target.type": "string",
-
-    "transforms.SoursTsToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
-    "transforms.SoursTsToDatetime.field": "__source_ts_ms",
-    "transforms.SoursTsToDatetime.format": "yyyy-MM-dd HH:mm:ss",
-    "transforms.SoursTsToDatetime.target.type": "string",
-
-    "transforms.TsToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
-    "transforms.TsToDatetime.field": "__ts_ms",
-    "transforms.TsToDatetime.format": "yyyy-MM-dd HH:mm:ss",
-    "transforms.TsToDatetime.target.type": "string"
+    "transforms.CompletedAtToDatetime.target.type": "string"
 
   }
 }

@@ -1,5 +1,5 @@
 {
- "name": "mssql_invoice_kafka_json_02_DebeziumSrc",
+ "name": "mssql_INV_kafka_json_02_DebeziumSrc",
  "config": {
     "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
     "tasks.max" : "1",
@@ -15,13 +15,13 @@
     "errors.log.enable": "true",
     "errors.log.include.messages": "true",
 
-    "topic.prefix": "mssql_invoice_kafka_json_02_DebeziumSrc",
+    "topic.prefix": "mssql_INV_kafka_json_02_DebeziumSrc",
     "topic.delimiter": "_",
 
     "database.history.kafka.topic.auto.create": "true",
 
     "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
-    "schema.history.internal.kafka.topic": "mssql_invoice_kafka_json_02_DebeziumSrc_schemahistory",
+    "schema.history.internal.kafka.topic": "mssql_INV_kafka_json_02_DebeziumSrc_schemahistory",
 
     "key.converter":"org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schema.registry.url":"http://schema-registry:8081",
@@ -42,8 +42,8 @@
     "transforms": "dropPrefix",
 
     "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
-    "transforms.dropPrefix.regex":"mssql_invoice_kafka_json_02_DebeziumSrc.inventory.(.*)",
-    "transforms.dropPrefix.replacement":"mssql_invoice_kafka_json_02_DebeziumSrc_$1"
+    "transforms.dropPrefix.regex":"mssql_INV_kafka_json_02_DebeziumSrc.inventory.(.*)",
+    "transforms.dropPrefix.replacement":"mssql_INV_kafka_json_02_DebeziumSrc_$1"
 
      }
  }

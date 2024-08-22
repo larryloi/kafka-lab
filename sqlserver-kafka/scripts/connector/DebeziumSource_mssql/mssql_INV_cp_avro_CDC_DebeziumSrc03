@@ -1,5 +1,5 @@
 {
-  "name": "mssql_INV_cp_avro_CDC_DebeziumSrc02",
+  "name": "mssql_INV_cp_avro_CDC_DebeziumSrc03",
   "config": {
       "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
       "tasks.max" : "1",
@@ -12,11 +12,11 @@
       "database.names": "inventory",
       "database.encrypt": "false",
  
-      "topic.prefix": "mssql_INV_cp_avro_CDC_DebeziumSrc02",
+      "topic.prefix": "mssql_INV_cp_avro_CDC_DebeziumSrc03",
       "topic.delimiter": "_",
  
       "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
-      "schema.history.internal.kafka.topic": "mssql_INV_cp_avro_CDC_DebeziumSrc02_schemahistory",
+      "schema.history.internal.kafka.topic": "mssql_INV_cp_avro_CDC_DebeziumSrc03_schemahistory",
 
       "database.history.kafka.topic.auto.create": "true",
  
@@ -39,7 +39,7 @@
 
       "transforms": "dropPrefix",
       "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
-      "transforms.dropPrefix.regex":"mssql_INV_cp_avro_CDC_DebeziumSrc02.inventory.(.*)",
-      "transforms.dropPrefix.replacement":"mssql_INV_cp_avro_CDC_DebeziumSrc02_$1"
+      "transforms.dropPrefix.regex":"mssql_INV_cp_avro_CDC_DebeziumSrc03.inventory.(.*)",
+      "transforms.dropPrefix.replacement":"mssql_INV_cp_avro_CDC_DebeziumSrc03_$1"
       }
   }
