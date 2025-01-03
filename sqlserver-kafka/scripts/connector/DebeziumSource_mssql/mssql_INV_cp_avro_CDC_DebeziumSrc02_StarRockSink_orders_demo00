@@ -25,7 +25,9 @@
     "insert.mode": "insert",
     "pk.mode": "record_key",
     "pk.fields": "id",
-    "table.name.format": "DWH.mssql_INV_cp_avro_CDC_DebeziumSrc02_INV_orders_demo00",
+    "table.name.format": "mssql_INV_cp_avro_CDC_DebeziumSrc02_INV_orders_demo00",
+    "fields.whitelist": "id,order_id,supplier_id,item_id,status,qty,net_price,issued_at,completed_at,spec,created_at,updated_at,__db,__schema,__table,__source_ts_ms,__ts_ms,__deleted",
+
     "sink.properties.strip_outer_array": "true",
     "sink.properties.format": "json",
 
@@ -33,7 +35,12 @@
     "errors.log.enable": "true",
     "errors.log.include.messages": "true",
 
-    "transforms": "unwrap,addfield,CreatedAtToDatetime,UpdatedAtToDatetime,IssuedAtToDatetime,CompletedAtToDatetime,SoursTsToDatetime,TsToDatetime",
+    "transforms": "InsertUpdateTs,unwrap,addfield,CreatedAtToDatetime,UpdatedAtToDatetime,IssuedAtToDatetime,CompletedAtToDatetime,SoursTsToDatetime,TsToDatetime",
+
+    "transforms.InsertUpdateTs.type": "org.apache.kafka.connect.transforms.InsertField$Value",
+    "transforms.InsertUpdateTs.timestamp.field": "updated_ts",
+    "transforms.InsertUpdateTs.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.InsertUpdateTs.target.type": "string",
 
     "transforms.addfield.type": "com.starrocks.connector.kafka.transforms.AddOpFieldForDebeziumRecord",
     "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",

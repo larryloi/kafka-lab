@@ -1,9 +1,12 @@
 {
-  "name": "mssql_order_cp_json_01_DebeziumSrc",
+  "name": "mssql_INV_cp_json_DebeziumSrc01",
   "config": {
       "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
       "tasks.max" : "1",
       "poll.interval.ms": "15000",
+
+      "errors.log.enable": "true",
+      "errors.log.include.messages": "true",
  
       "database.hostname" : "rdb1.kaskade.local",
       "database.port" : "1433",
@@ -11,11 +14,18 @@
       "database.password" : "Abcd1234",
       "database.names": "inventory",
       "database.encrypt": "false",
+
+      "table.include.list": "INV.orders_demo00,INV.invoices",
+      "include.schema.changes": "true",
+      "snapshot.mode": "schema_only",
+      "tombstones.on.delete": "true",
+      "selectMethod": "cursor",
  
-      "topic.prefix": "mssql_order_cp_json_01_DebeziumSrc",
+      "topic.prefix": "mssql_INV_cp_json_DebeziumSrc01",
+      "topic.delimiter": "_",
  
       "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
-      "schema.history.internal.kafka.topic": "mssql_order_cp_json_01_DebeziumSrc.schemahistory",
+      "schema.history.internal.kafka.topic": "mssql_INV_cp_json_DebeziumSrc01_schemahistory",
 
       "database.history.kafka.topic.auto.create": "true",
  
@@ -27,13 +37,11 @@
       "value.converter.schema.registry.url":"http://schema-registry:8081",
       "value.converter.schemas.enable": "false",
  
-      "table.include.list": "INV.orders",
-      "include.schema.changes": "true",
-      "snapshot.mode": "initial",
-      "tombstones.on.delete": "true",
-      "selectMethod": "cursor",
+      "transforms": "dropPrefix",
+      "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
+      "transforms.dropPrefix.regex":"mssql_INV_cp_json_DebeziumSrc01.inventory.(.*)",
+      "transforms.dropPrefix.replacement":"mssql_INV_cp_json_DebeziumSrc01_$1"
  
-      "errors.log.enable": "true",
-      "errors.log.include.messages": "true"
+
       }
   }

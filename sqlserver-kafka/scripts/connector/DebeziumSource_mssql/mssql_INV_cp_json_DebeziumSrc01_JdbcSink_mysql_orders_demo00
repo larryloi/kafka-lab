@@ -1,0 +1,52 @@
+{
+  "name": "mssql_INV_cp_json_DebeziumSrc01_JdbcSink_mysql_orders_demo00",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+
+    "connection.url": "jdbc:mysql://rdb1.kaskade.local:3306/DWH",
+    "connection.user": "SVC_DS_KAFKA",
+    "connection.password": "Abcd1234",
+    "tasks.max": "1",
+
+    "topics": "mssql_INV_cp_json_DebeziumSrc01_INV_orders_demo00",
+
+    "auto.create": true,
+    "auto.evolve": true,
+
+    "table.name.format": "DWH.mssql_INV_cp_avro_CDC_DebeziumSrc03_INV_orders_demo00",
+    "insert.mode": "upsert",
+    "pk.mode": "record_key",
+    "pk.fields": "id",
+    "delete.enabled": "true",
+    
+    "key.converter": "io.confluent.connect.json.JsonSchemaConverter",
+    "key.converter.schema.registry.url":"http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+
+    "value.converter": "io.confluent.connect.json.JsonSchemaConverter",
+    "value.converter.schema.registry.url":"http://schema-registry:8081",
+    "value.converter.schemas.enable": "false",
+
+    "transforms": "unwrap,CreatedAtToDatetime,UpdatedAtToDatetime,SourceTsToDatetime",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.add.fields": "op,table,lsn,source.ts_ms,server_id,file,pos",
+    "transforms.unwrap.add.headers": "db",
+    "transforms.unwrap.delete.handling.mode": "rewrite",
+
+    "transforms.CreatedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.CreatedAtToDatetime.field": "created_at",
+    "transforms.CreatedAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.CreatedAtToDatetime.target.type": "Timestamp",
+
+    "transforms.UpdatedAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.UpdatedAtToDatetime.field": "updated_at",
+    "transforms.UpdatedAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.UpdatedAtToDatetime.target.type": "Timestamp",
+
+    "transforms.SourceTsToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.SourceTsToDatetime.field": "__source_ts_ms",
+    "transforms.SourceTsToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.SourceTsToDatetime.target.type": "Timestamp"
+
+  }
+}

@@ -37,9 +37,13 @@
       "errors.log.enable": "true",
       "errors.log.include.messages": "true",
 
-      "transforms": "dropPrefix",
+      "transforms": "dropPrefix,InsertIngestedAt",
       "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
       "transforms.dropPrefix.regex":"mssql_INV_cp_avro_CDC_DebeziumSrc03.inventory.(.*)",
-      "transforms.dropPrefix.replacement":"mssql_INV_cp_avro_CDC_DebeziumSrc03_$1"
+      "transforms.dropPrefix.replacement":"mssql_INV_cp_avro_CDC_DebeziumSrc03_$1",
+
+      "transforms.InsertIngestedAt.timestamp.field":"ingested_at", 
+      "transforms.InsertIngestedAt.type":"org.apache.kafka.connect.transforms.InsertField$Value"
+
       }
   }
