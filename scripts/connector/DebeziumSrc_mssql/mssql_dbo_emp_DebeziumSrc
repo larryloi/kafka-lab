@@ -1,0 +1,45 @@
+{
+  "name": "mssql_dbo_emp_DebeziumSrc",
+  "config": {
+      "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
+      "tasks.max" : "1",
+      "poll.interval.ms": "15000",
+ 
+      "database.hostname" : "db01.kaskade.local",
+      "database.port" : "1433",
+      "database.user" : "kafka_src",
+      "database.password" : "Abcd1234",
+      "database.names": "inventory",
+      "database.encrypt": "false",
+ 
+      "topic.prefix": "mssql_dbo_emp_DebeziumSrc",
+      "topic.delimiter": "_",
+ 
+      "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
+      "schema.history.internal.kafka.topic": "mssql_dbo_emp_DebeziumSrc_schemahistory",
+
+      "database.history.kafka.topic.auto.create": "true",
+ 
+      "key.converter": "io.confluent.connect.avro.AvroConverter",
+      "key.converter.schema.registry.url": "http://schema-registry:8081",
+      "key.converter.schemas.enable": "false",
+ 
+      "value.converter": "io.confluent.connect.avro.AvroConverter",
+      "value.converter.schema.registry.url": "http://schema-registry:8081",
+      "value.converter.schemas.enable": "false",
+ 
+      "table.include.list": "dbo.emp",
+      "include.schema.changes": "true",
+      "snapshot.mode": "initial",
+      "tombstones.on.delete": "true",
+      "selectMethod": "cursor",
+ 
+      "errors.log.enable": "true",
+      "errors.log.include.messages": "true",
+
+      "transforms": "dropPrefix",
+      "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
+      "transforms.dropPrefix.regex":"mssql_dbo_emp_DebeziumSrc.inventory.(.*)",
+      "transforms.dropPrefix.replacement":"mssql_dbo_emp_DebeziumSrc$1"
+      }
+  }

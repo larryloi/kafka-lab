@@ -1,0 +1,49 @@
+{
+  "name": "mssql_INV_cp_avro_DebeziumSrc03",
+  "config": {
+      "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
+      "tasks.max" : "1",
+      "poll.interval.ms": "15000",
+ 
+      "database.hostname" : "rdb1.kaskade.local",
+      "database.port" : "1433",
+      "database.user" : "SVC_DS_KAFKA",
+      "database.password" : "Abcd1234",
+      "database.names": "inventory",
+      "database.encrypt": "false",
+ 
+      "topic.prefix": "mssql_INV_cp_avro_DebeziumSrc03",
+      "topic.delimiter": "_",
+ 
+      "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
+      "schema.history.internal.kafka.topic": "mssql_INV_cp_avro_DebeziumSrc03_schemahistory",
+
+      "database.history.kafka.topic.auto.create": "true",
+ 
+      "key.converter": "io.confluent.connect.avro.AvroConverter",
+      "key.converter.schema.registry.url": "http://schema-registry:8081",
+      "key.converter.schemas.enable": "false",
+ 
+      "value.converter": "io.confluent.connect.avro.AvroConverter",
+      "value.converter.schema.registry.url": "http://schema-registry:8081",
+      "value.converter.schemas.enable": "false",
+ 
+      "table.include.list": "INV.orders_demo00,INV.invoices",
+      "include.schema.changes": "true",
+      "snapshot.mode": "initial",
+      "tombstones.on.delete": "true",
+      "selectMethod": "cursor",
+ 
+      "errors.log.enable": "true",
+      "errors.log.include.messages": "true",
+
+      "transforms": "dropPrefix,InsertIngestedAt",
+      "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
+      "transforms.dropPrefix.regex":"mssql_INV_cp_avro_DebeziumSrc03.inventory.(.*)",
+      "transforms.dropPrefix.replacement":"mssql_INV_cp_avro_DebeziumSrc03_$1",
+
+      "transforms.InsertIngestedAt.timestamp.field":"ingested_at", 
+      "transforms.InsertIngestedAt.type":"org.apache.kafka.connect.transforms.InsertField$Value"
+
+      }
+  }

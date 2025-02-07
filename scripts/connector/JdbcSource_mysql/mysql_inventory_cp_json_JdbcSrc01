@@ -1,0 +1,37 @@
+{
+  "name": "mysql_inventory_cp_json_JdbcSrc01",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+
+    "connection.url": "jdbc:mysql://db01.kaskade.local:3306/inventory",
+    "connection.user": "kafka_src",
+    "connection.password": "Abcd1234",
+    "tasks.max": "1",
+
+    "topic.prefix": "mysql_inventory_cp_json_JdbcSrc01_",
+    "topic.creation.enable": true,
+    "topic.creation.default.replication.factor": 1,
+    "topic.creation.default.partitions": 1,
+
+    "table.whitelist": "inventory.my_orders",
+    "numeric.mapping": "best_fit",
+    "mode": "incrementing",
+    "incrementing.column.name": "id",
+    "timestamp.column.name": "created_at",
+    "table.types": "TABLE",
+
+    "dialect.name": "MySqlDatabaseDialect",
+    "poll.interval.ms": 15000,
+    "batch.max.rows": 100,
+
+    "key.converter": "io.confluent.connect.json.JsonSchemaConverter",
+    "key.converter.schema.registry.url": "http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+
+    "value.converter":"io.confluent.connect.json.JsonSchemaConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.schemas.enable": "false"
+  }
+}
