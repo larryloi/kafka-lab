@@ -15,7 +15,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     networks:
       integration:
-        ipv4_address: 172.19.0.2
+        ipv4_address: 172.199.0.2
 
 
   broker:
@@ -52,7 +52,7 @@ services:
       - kafka-broker-data:/var/lib/kafka/data
     networks:
       integration:
-        ipv4_address: 172.19.0.3
+        ipv4_address: 172.199.0.3
 
 
   schema-registry:
@@ -72,11 +72,12 @@ services:
       - kafka-schema-registry-data:/var/lib/schema-registry/data
     networks:
       integration:
-        ipv4_address: 172.19.0.4
+        ipv4_address: 172.199.0.4
 
   connect:
     # profiles: ["kafka", "all"]
-    image: cnfldemos/cp-server-connect-datagen:0.5.3-7.1.0
+    # image: cnfldemos/cp-server-connect-datagen:0.5.3-7.1.0
+    image: custom-connect:latest
     hostname: connect
     container_name: connect
     depends_on:
@@ -86,7 +87,7 @@ services:
       - "8083:8083"
     volumes:
       - ./connect-plugins:/connect-plugins
-      - ./connect-smt:/connect-smt
+      # - ./connect-smt:/connect-smt
       # - ./connect-libs:/usr/share/java/connect-libs
     environment:
       CONNECT_BOOTSTRAP_SERVERS: 'broker:29092'
@@ -106,7 +107,7 @@ services:
       CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-7.1.0.jar
       CONNECT_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
-      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components,/connect-plugins,/connect-smt"
+      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components,/connect-plugins"
       #CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
       CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR,org.apache.kafka.connect=DEBUG
       CONNECT_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -124,7 +125,7 @@ services:
         sleep infinity
     networks:
       integration:
-        ipv4_address: 172.19.0.5
+        ipv4_address: 172.199.0.5
 
 
   control-center:
@@ -152,7 +153,7 @@ services:
       PORT: 9021
     networks:
       integration:
-        ipv4_address: 172.19.0.6
+        ipv4_address: 172.199.0.6
 
 
   ksqldb-server:
@@ -180,7 +181,7 @@ services:
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: 'true'
     networks:
       integration:
-        ipv4_address: 172.19.0.7
+        ipv4_address: 172.199.0.7
 
 
   ksqldb-cli:
@@ -196,7 +197,7 @@ services:
     tty: true
     networks:
       integration:
-        ipv4_address: 172.19.0.8
+        ipv4_address: 172.199.0.8
 
 
   ksql-datagen:
@@ -223,7 +224,7 @@ services:
       STREAMS_SCHEMA_REGISTRY_PORT: 8081
     networks:
       integration:
-        ipv4_address: 172.19.0.9
+        ipv4_address: 172.199.0.9
 
 
   rest-proxy:
@@ -243,7 +244,7 @@ services:
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
     networks:
       integration:
-        ipv4_address: 172.19.0.10
+        ipv4_address: 172.199.0.10
 
 
 
@@ -254,7 +255,7 @@ services:
 #    container_name: seatunnel-master
 #    environment:
 #      - TZ=Asia/Macau
-#      - ST_DOCKER_MEMBER_LIST=172.19.0.11,172.19.0.12,172.19.0.13
+#      - ST_DOCKER_MEMBER_LIST=172.199.0.11,172.199.0.12,172.199.0.13
 #    entrypoint: >
 #      /bin/sh -c "
 #      /opt/seatunnel/bin/seatunnel-cluster.sh -r master -DJvmOption=\"-Xms2G -Xmx2G\"
@@ -267,7 +268,7 @@ services:
 #      - ../seatunnel-lab/JOBS:/opt/seatunnel/JOBS
 #    networks:
 #      integration:
-#        ipv4_address: 172.19.0.11
+#        ipv4_address: 172.199.0.11
 #
 #  st-worker1:
 #    profiles: ["seatunnel", "all"]
@@ -276,7 +277,7 @@ services:
 #    container_name: seatunnel-worker-1
 #    environment:
 #      - TZ=Asia/Macau
-#      - ST_DOCKER_MEMBER_LIST=172.19.0.11,172.19.0.12,172.19.0.13
+#      - ST_DOCKER_MEMBER_LIST=172.199.0.11,172.199.0.12,172.199.0.13
 #    entrypoint: >
 #      /bin/sh -c "
 #      /opt/seatunnel/bin/seatunnel-cluster.sh -r worker -DJvmOption=\"-Xms2G -Xmx2G\"
@@ -287,7 +288,7 @@ services:
 #      - st-master
 #    networks:
 #      integration:
-#        ipv4_address: 172.19.0.12
+#        ipv4_address: 172.199.0.12
 #
 #  st-worker2:
 #    profiles: ["seatunnel", "all"]
@@ -296,7 +297,7 @@ services:
 #    container_name: seatunnel-worker-2
 #    environment:
 #      - TZ=Asia/Macau
-#      - ST_DOCKER_MEMBER_LIST=172.19.0.11,172.19.0.12,172.19.0.13
+#      - ST_DOCKER_MEMBER_LIST=172.199.0.11,172.199.0.12,172.199.0.13
 #    entrypoint: >
 #      /bin/sh -c "
 #      /opt/seatunnel/bin/seatunnel-cluster.sh -r worker -DJvmOption=\"-Xms2G -Xmx2G\"
@@ -307,7 +308,7 @@ services:
 #      - st-master
 #    networks:
 #      integration:
-#        ipv4_address: 172.19.0.13
+#        ipv4_address: 172.199.0.13
 
 
 
@@ -316,8 +317,8 @@ services:
 #     driver: bridge
 #     ipam:
 #       config:
-#         - subnet: 172.19.0.0/24
-#           gateway: 172.19.0.1
+#         - subnet: 172.199.0.0/24
+#           gateway: 172.199.0.1
 
 networks:
   integration:

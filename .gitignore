@@ -1,4 +1,4 @@
-sqlserver-kafka.old
-sqlserver-kafka/connect-plugins/*
-sqlserver-kafka/connect-src/*
-sqlserver-kafka/offsetexplorer.sh
+connect-plugins/*
+src/*
+offsetexplorer.sh
+tmp/*

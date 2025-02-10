@@ -1,5 +1,5 @@
 network.create:
-	docker network create --driver bridge --subnet 172.19.0.0/24 --gateway 172.19.0.1 integration || true
+	docker network create --driver bridge --subnet 172.199.0.0/24 --gateway 172.199.0.1 integration || true
 	# docker network create --driver bridge integration || true
 
 volume.rm.all:
@@ -25,3 +25,6 @@ all.down:
 
 logs:
 	docker compose logs -f ${name}
+
+connect.build:
+	docker build -t custom-connect:latest -f ./Dockerfile-connect .

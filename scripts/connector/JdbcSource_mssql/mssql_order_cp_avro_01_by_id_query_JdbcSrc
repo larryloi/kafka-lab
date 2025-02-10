@@ -5,8 +5,8 @@
     "errors.log.enable": "true",
     "errors.log.include.messages": "true",
 
-    "connection.url": "jdbc:sqlserver://rdb1:1433;databaseName=inventory",
-    "connection.user": "SVC_DS_KAFKA",
+    "connection.url": "jdbc:sqlserver://db01:1433;databaseName=inventory",
+    "connection.user": "kafka_src",
     "connection.password": "Abcd1234",
     "tasks.max": "1",
 
@@ -20,7 +20,7 @@
     "incrementing.column.name": "id",
     "timestamp.column.name": "issued_at",
     "table.types": "TABLE",
-    "query": "SELECT * FROM (SELECT id,order_id,supplier_id,item_id,[status],qty,net_price,issued_at,completed_at,created_at FROM inventory.INV.orders ) a ",
+    "query": "SELECT * FROM (SELECT id,order_id,supplier_id,item_id,[status],qty,net_price,issued_at,completed_at,created_at FROM inventory.INV.orders_demo00 ) a ",
 
     "dialect.name": "SqlServerDatabaseDialect",
     "poll.interval.ms": 15000,
