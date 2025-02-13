@@ -1,6 +1,5 @@
 ### https://github.com/AhmetFurkanDEMIR/SQL-Server-Kafka-Example/blob/main/docker-compose.yml
 ---
-#version: '2'
 #version: '3.7'
 services:
   zookeeper:
@@ -74,31 +73,30 @@ services:
       integration:
         ipv4_address: 172.199.0.4
 
-  connect:
+  connect-01:
     # profiles: ["kafka", "all"]
-    # image: cnfldemos/cp-server-connect-datagen:0.5.3-7.1.0
-    image: custom-connect:latest
-    hostname: connect
-    container_name: connect
+    image: cnfldemos/cp-server-connect-datagen:0.5.3-7.1.0
+    # image: custom-connect:latest
+    hostname: connect-01
+    container_name: connect-01
     depends_on:
       - broker
       - schema-registry
     ports:
       - "8083:8083"
     volumes:
-      - ./connect-plugins:/connect-plugins
-      # - ./connect-smt:/connect-smt
-      # - ./connect-libs:/usr/share/java/connect-libs
+      - ./connect-plugins_v01:/connect-plugins
     environment:
       CONNECT_BOOTSTRAP_SERVERS: 'broker:29092'
-      CONNECT_REST_ADVERTISED_HOST_NAME: connect
-      CONNECT_GROUP_ID: compose-connect-group
-      CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-configs
+      CONNECT_REST_ADVERTISED_HOST_NAME: connect-01
+      CONNECT_REST_PORT: 8083
+      CONNECT_GROUP_ID: compose-connect01-group
+      CONNECT_CONFIG_STORAGE_TOPIC: docker-connect01-configs
       CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_OFFSET_FLUSH_INTERVAL_MS: 10000
-      CONNECT_OFFSET_STORAGE_TOPIC: docker-connect-offsets
+      CONNECT_OFFSET_STORAGE_TOPIC: docker-connect01-offsets
       CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
-      CONNECT_STATUS_STORAGE_TOPIC: docker-connect-status
+      CONNECT_STATUS_STORAGE_TOPIC: docker-connect01-status
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
       CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
@@ -111,21 +109,71 @@ services:
       #CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
       CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR,org.apache.kafka.connect=DEBUG
       CONNECT_ZOOKEEPER_CONNECT: zookeeper:2181
-
-    command:
-      - bash 
-      - -c 
-      - |
-        echo "Installing connector plugins"
-        confluent-hub install --no-prompt debezium/debezium-connector-sqlserver:latest
-        #
-        echo "Launching Kafka Connect worker"
-        /etc/confluent/docker/run & 
-        #
-        sleep infinity
+#    command:
+#      - bash 
+#      - -c 
+#      - |
+#        echo "Installing connector plugins"
+#        confluent-hub install --no-prompt debezium/debezium-connector-sqlserver:latest
+#        #
+#        echo "Launching Kafka Connect worker"
+#        /etc/confluent/docker/run & 
+#        #
+#        sleep infinity
     networks:
       integration:
-        ipv4_address: 172.199.0.5
+        ipv4_address: 172.199.0.25
+
+  connect-02:
+    # profiles: ["kafka", "all"]
+    # image: cnfldemos/cp-server-connect-datagen:0.5.3-7.1.0
+    image: custom-connect:latest
+    hostname: connect-02
+    container_name: connect-02
+    depends_on:
+      - broker
+      - schema-registry
+    ports:
+      - "8084:8083"
+    volumes:
+      - ./connect-plugins_v02:/connect-plugins
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: 'broker:29092'
+      CONNECT_REST_ADVERTISED_HOST_NAME: connect-02
+      CONNECT_REST_PORT: 8083
+      CONNECT_GROUP_ID: compose-connect02-group
+      CONNECT_CONFIG_STORAGE_TOPIC: docker-connect02-configs
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_FLUSH_INTERVAL_MS: 10000
+      CONNECT_OFFSET_STORAGE_TOPIC: docker-connect02-offsets
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_TOPIC: docker-connect02-status
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      # CLASSPATH required due to CC-2422
+      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-7.1.0.jar
+      CONNECT_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
+      CONNECT_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
+      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components,/connect-plugins"
+      #CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
+      CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR,org.apache.kafka.connect=DEBUG
+      CONNECT_ZOOKEEPER_CONNECT: zookeeper:2181
+#    command:
+#      - bash 
+#      - -c 
+#      - |
+#        echo "Installing connector plugins"
+#        confluent-hub install --no-prompt debezium/debezium-connector-sqlserver:latest
+#        #
+#        echo "Launching Kafka Connect worker"
+#        /etc/confluent/docker/run & 
+#        #
+#        sleep infinity
+    networks:
+      integration:
+        ipv4_address: 172.199.0.26
 
 
   control-center:
@@ -136,13 +184,15 @@ services:
     depends_on:
       - broker
       - schema-registry
-      - connect
       - ksqldb-server
+      - connect-01
+      - connect-02
     ports:
       - "9021:9021"
     environment:
       CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker:29092'
-      CONTROL_CENTER_CONNECT_CONNECT-DEFAULT_CLUSTER: 'connect:8083'
+      CONTROL_CENTER_CONNECT_CONNECT-DEFAULT_CLUSTER: 'connect-01:8083'
+      CONTROL_CENTER_CONNECT_CONNECT-SECOND_CLUSTER: 'connect-02:8083'
       CONTROL_CENTER_KSQL_KSQLDB1_URL: "http://ksqldb-server:8088"
       CONTROL_CENTER_KSQL_KSQLDB1_ADVERTISED_URL: "http://localhost:8088"
       CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
@@ -163,7 +213,7 @@ services:
     container_name: ksqldb-server
     depends_on:
       - broker
-      - connect
+      - connect-01
     ports:
       - "8088:8088"
     environment:
@@ -175,7 +225,7 @@ services:
       KSQL_KSQL_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
       KSQL_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
       KSQL_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
-      KSQL_KSQL_CONNECT_URL: "http://connect:8083"
+      KSQL_KSQL_CONNECT_URL: "http://connect-01:8083"
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_REPLICATION_FACTOR: 1
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: 'true'
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: 'true'
@@ -191,7 +241,7 @@ services:
     hostname: ksqldb-cli
     depends_on:
       - broker
-      - connect
+      - connect-01
       - ksqldb-server
     entrypoint: /bin/sh
     tty: true
@@ -209,7 +259,7 @@ services:
       - ksqldb-server
       - broker
       - schema-registry
-      - connect
+      - connect-01
     command: "bash -c 'echo Waiting for Kafka to be ready... && \
                        cub kafka-ready -b broker:29092 1 40 && \
                        echo Waiting for Confluent Schema Registry to be ready... && \
@@ -245,7 +295,6 @@ services:
     networks:
       integration:
         ipv4_address: 172.199.0.10
-
 
 
 #  st-master:
@@ -311,7 +360,6 @@ services:
 #        ipv4_address: 172.199.0.13
 
 
-
 # networks:
 #   integration:
 #     driver: bridge
@@ -323,7 +371,6 @@ services:
 networks:
   integration:
     external: true
-
 
 volumes:
   kafka-broker-data:

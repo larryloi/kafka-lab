@@ -1,0 +1,55 @@
+{
+  "name": "mysql_inventory_cp_avro_CDCSrc_80",
+  "config": {
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+
+    "tasks.max" : "1",
+    "poll.interval.ms": "15000",
+
+    "database.hostname": "db01.kaskade.local",
+    "database.port": "3306",
+    "database.user": "kafka_src",
+    "database.password": "Abcd1234",
+    "database.server.id": "184058",
+    "database.server.name": "inventory",
+    "database.include.list": "inventory",
+    "database.encrypt": "false",
+    "table.include.list": "inventory.my_orders,inventory.suppliers",
+
+    "topic.prefix": "mysql_inventory_cp_avro_CDCSrc_80",
+    "topic.creation.enable": "true",
+    "topic.creation.default.replication.factor": 1,  
+    "topic.creation.default.partitions": 1,  
+    "topic.creation.default.cleanup.policy": "compact",  
+    "topic.creation.default.compression.type": "lz4",
+    "topic.delimiter": "_",
+
+    "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
+    "schema.history.internal.kafka.topic": "mysql_inventory_cp_avro_CDCSrc_80_schemahistory",
+
+    "database.history.kafka.topic.auto.create": "true",
+
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url": "http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.schemas.enable": "false",
+
+    "include.schema.changes": "true",
+    "snapshot.mode": "schema_only",
+    "tombstones.on.delete": "true",
+    "selectMethod": "cursor",
+    
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+
+    "transforms": "dropPrefix",
+
+    "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.dropPrefix.regex":"mysql_inventory_cp_avro_CDCSrc_80.inventory.(.*)",
+    "transforms.dropPrefix.replacement":"mysql_inventory_cp_avro_CDCSrc_80_$1"
+  }
+}
+

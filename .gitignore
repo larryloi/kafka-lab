@@ -1,4 +1,4 @@
-connect-plugins/*
+connect-plugins_v*/*
 src/*
 offsetexplorer.sh
 tmp/*
