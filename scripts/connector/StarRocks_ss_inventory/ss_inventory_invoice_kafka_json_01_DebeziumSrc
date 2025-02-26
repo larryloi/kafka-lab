@@ -15,6 +15,11 @@
     "errors.log.enable": "true",
     "errors.log.include.messages": "true",
 
+    "topic.creation.default.replication.factor": 1,
+    "topic.creation.default.partitions": 3,
+    "topic.creation.default.cleanup.policy": "compact",
+    "topic.creation.default.compression.type": "lz4",
+
     "topic.prefix": "ss_inventory_invoice_kafka_json_01_DebeziumSrc",
 
     "database.history.kafka.topic.auto.create": "true",

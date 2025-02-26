@@ -17,6 +17,11 @@
 
      "topic.prefix": "ss_inventory_invoice_json_01",
 
+     "topic.creation.default.replication.factor": 1,
+     "topic.creation.default.partitions": 3,
+     "topic.creation.default.cleanup.policy": "compact",
+     "topic.creation.default.compression.type": "lz4",
+
       "database.history.kafka.topic.auto.create": "true",
 
      "schema.history.internal.kafka.bootstrap.servers": "broker:29092",

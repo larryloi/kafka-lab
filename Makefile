@@ -27,4 +27,4 @@ logs:
 	docker compose logs -f ${name}
 
 connect.build:
-	docker build -t custom-connect:latest -f ./Dockerfile-connect .
+	docker build -t quay.io/larryloi/cp-server-connect-7.8.0-cust01:latest -f ./Dockerfile-connect-cust01 .

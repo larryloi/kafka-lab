@@ -13,6 +13,10 @@
     "database.encrypt": "false",
 
     "topic.prefix": "mssql_order_kafka_json_01_DebeziumSrc",
+    "topic.creation.default.replication.factor": 1,
+    "topic.creation.default.partitions": 3,
+    "topic.creation.default.cleanup.policy": "compact",
+    "topic.creation.default.compression.type": "lz4",
 
     "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
     "schema.history.internal.kafka.topic": "mssql_order_kafka_json_01_DebeziumSrc.schemahistory",

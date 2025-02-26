@@ -18,6 +18,10 @@
      "database.history.kafka.bootstrap.servers" : "broker:9092",
      "database.history.kafka.topic": "schema-changes.inventory.customers",
      "topic.prefix": "DEB",
+     "topic.creation.default.replication.factor": 1,
+     "topic.creation.default.partitions": 3,
+     "topic.creation.default.cleanup.policy": "compact",
+     "topic.creation.default.compression.type": "lz4",
 
      "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
      "schema.history.internal.kafka.topic": "schemahistory.inventory.inv.customers",

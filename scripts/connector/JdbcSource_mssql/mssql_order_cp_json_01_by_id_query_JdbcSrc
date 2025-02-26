@@ -13,7 +13,9 @@
     "topic.prefix": "mssql_order_cp_json_01_by_id_query",
     "topic.creation.enable": true,
     "topic.creation.default.replication.factor": 1,
-    "topic.creation.default.partitions": 1,
+    "topic.creation.default.partitions": 3,
+    "topic.creation.default.cleanup.policy": "compact",
+    "topic.creation.default.compression.type": "lz4",
     
     "numeric.mapping": "best_fit",
     "mode": "incrementing",

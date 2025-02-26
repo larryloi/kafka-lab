@@ -13,7 +13,12 @@
  
       "errors.log.enable": "true",
       "errors.log.include.messages": "true",
- 
+
+      "topic.creation.default.replication.factor": 1,
+      "topic.creation.default.partitions": 3,
+      "topic.creation.default.cleanup.policy": "compact",
+      "topic.creation.default.compression.type": "lz4",
+
       "topic.prefix": "INVENTORY.suppliers.jdbc",
       "poll.interval.ms": "15000",
       "tasks.max": "1",

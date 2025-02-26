@@ -127,7 +127,7 @@ services:
   connect-02:
     # profiles: ["kafka", "all"]
     # image: cnfldemos/cp-server-connect-datagen:0.5.3-7.1.0
-    image: custom-connect:latest
+    image: quay.io/larryloi/cp-server-connect-7.8.0-cust01:latest
     hostname: connect-02
     container_name: connect-02
     depends_on:
@@ -135,8 +135,8 @@ services:
       - schema-registry
     ports:
       - "8084:8083"
-    volumes:
-      - ./connect-plugins_v02:/connect-plugins
+#     volumes:
+#       - ./connect-plugins_v02:/connect-plugins
     environment:
       CONNECT_BOOTSTRAP_SERVERS: 'broker:29092'
       CONNECT_REST_ADVERTISED_HOST_NAME: connect-02

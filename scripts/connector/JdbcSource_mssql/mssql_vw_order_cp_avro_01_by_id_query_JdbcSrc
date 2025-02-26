@@ -13,7 +13,9 @@
     "topic.prefix": "mssql_vw_order_cp_avro_01_by_id_query_JdbcSrc-vw_orders_1tbl",
     "topic.creation.enable": true,
     "topic.creation.default.replication.factor": 1,
-    "topic.creation.default.partitions": 1,
+    "topic.creation.default.partitions": 3,
+    "topic.creation.default.cleanup.policy": "compact",
+    "topic.creation.default.compression.type": "lz4",
     
     "numeric.mapping": "best_fit",
     "mode": "incrementing",

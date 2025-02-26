@@ -1,4 +1,10 @@
-connect-plugins_v*/*
+
+connect-plugins_v01/*
+connect-plugins_v02/*
 src/*
 offsetexplorer.sh
 tmp/*
+
+# Do not ignore these files:
+!connect-plugins-v01/.keep
+!connect-plugins-v02/.keep

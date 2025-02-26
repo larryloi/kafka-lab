@@ -13,7 +13,9 @@
     "topic.prefix": "mssql_INV_cp_json_01_JdbcSrc.",
     "topic.creation.enable": true,
     "topic.creation.default.replication.factor": 1,
-    "topic.creation.default.partitions": 1,
+    "topic.creation.default.partitions": 3,
+    "topic.creation.default.cleanup.policy": "compact",
+    "topic.creation.default.compression.type": "lz4",
 
     "table.whitelist": "inventory.INV.orders_demo00,inventory.INV.orders",
     "numeric.mapping": "best_fit",

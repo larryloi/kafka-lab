@@ -16,6 +16,11 @@
     "value.converter.schema.registry.url":"http://schema-registry:8081",
 
     "topic.prefix": "schematic.SourceSchema.Job_Status_Log",
+    "topic.creation.default.replication.factor": 1,
+    "topic.creation.default.partitions": 3,
+    "topic.creation.default.cleanup.policy": "compact",
+    "topic.creation.default.compression.type": "lz4",
+
     "poll.interval.ms": "15000",
     "tasks.max": "1",
 

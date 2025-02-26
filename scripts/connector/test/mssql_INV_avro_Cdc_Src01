@@ -11,7 +11,12 @@
       "database.password" : "Abcd1234",
       "database.names": "inventory",
       "database.encrypt": "false",
- 
+
+      "topic.creation.default.replication.factor": 1,
+      "topic.creation.default.partitions": 3,
+      "topic.creation.default.cleanup.policy": "compact",
+      "topic.creation.default.compression.type": "lz4",
+
       "topic.prefix": "mssql_INV_avro_Cdc_Src01",
       "topic.delimiter": "_",
  

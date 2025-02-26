@@ -14,6 +14,10 @@
  
       "topic.prefix": "mssql_dbo_emp_DebeziumSrc",
       "topic.delimiter": "_",
+      "topic.creation.default.replication.factor": 1,
+      "topic.creation.default.partitions": 3,
+      "topic.creation.default.cleanup.policy": "compact",
+      "topic.creation.default.compression.type": "lz4",
  
       "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
       "schema.history.internal.kafka.topic": "mssql_dbo_emp_DebeziumSrc_schemahistory",
