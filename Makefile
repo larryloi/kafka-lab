@@ -11,17 +11,23 @@ volume.list:
 ps:
 	docker compose ps
 
-up: 
-	docker compose --profile ${p} up -d
+up:
+	docker compsoe up -d
 
 down:
-	docker compose --profile ${p} down
+	docker compose down 
 
-all.up:
-	docker compose --profile all up -d
-
-all.down:
-	docker compose --profile all down
+# up: 
+# 	docker compose --profile ${p} up -d
+# 
+# down:
+# 	docker compose --profile ${p} down
+# 
+# all.up:
+# 	docker compose --profile all up -d
+# 
+# all.down:
+# 	docker compose --profile all down
 
 logs:
 	docker compose logs -f ${name}
