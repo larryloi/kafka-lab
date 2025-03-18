@@ -17,11 +17,11 @@ services:
         ipv4_address: 172.199.0.2
 
 
-  broker1:
+  broker:
     # profiles: ["kafka", "all"]
     image: confluentinc/cp-server:7.1.0
-    hostname: broker1
-    container_name: broker1
+    hostname: broker
+    container_name: broker
     depends_on:
       - zookeeper
     ports:
@@ -32,7 +32,7 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker1:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
@@ -43,52 +43,15 @@ services:
       KAFKA_JMX_PORT: 9101
       KAFKA_JMX_HOSTNAME: localhost
       KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
-      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker1:29092
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:29092
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       CONFLUENT_METRICS_ENABLE: 'true'
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
     volumes:
-      - kafka-broker1-data:/var/lib/kafka/data
+      - kafka-broker-data:/var/lib/kafka/data
     networks:
       integration:
         ipv4_address: 172.199.0.3
-
-
-  broker2:
-    # profiles: ["kafka", "all"]
-    image: confluentinc/cp-server:7.1.0
-    hostname: broker2
-    container_name: broker2
-    depends_on:
-      - zookeeper
-    ports:
-      - "29093:29092"
-      - "9093:9093"
-      - "9102:9101"
-    environment: 
-      KAFKA_BROKER_ID: 2
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker2:29092,PLAINTEXT_HOST://localhost:9093
-      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9101
-      KAFKA_JMX_HOSTNAME: localhost
-      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
-      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker2:29092
-      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
-      CONFLUENT_METRICS_ENABLE: 'true'
-      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
-    volumes:
-      - kafka-broker2-data:/var/lib/kafka/data
-    networks:
-      integration:
-        ipv4_address: 172.199.0.4
 
 
   schema-registry:
@@ -97,93 +60,120 @@ services:
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
-      - broker1
+      - broker
     ports:
       - "8081:8081"
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker1:29092,broker2:29093'
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:29092'
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
     volumes:
       - kafka-schema-registry-data:/var/lib/schema-registry/data
     networks:
       integration:
-        ipv4_address: 172.199.0.5
+        ipv4_address: 172.199.0.4
 
-
-  connect-a01:
+  connect-01:
+    # profiles: ["kafka", "all"]
     image: cnfldemos/cp-server-connect-datagen:0.5.3-7.1.0
-    hostname: connect-a01
-    container_name: connect-a01
+    # image: custom-connect:latest
+    hostname: connect-01
+    container_name: connect-01
     depends_on:
-      - broker1
+      - broker
       - schema-registry
     ports:
       - "8083:8083"
     volumes:
       - ./connect-plugins_v01:/connect-plugins
     environment:
-      CONNECT_BOOTSTRAP_SERVERS: 'broker1:29092,broker2:29092'
-      CONNECT_REST_ADVERTISED_HOST_NAME: connect-a01
+      CONNECT_BOOTSTRAP_SERVERS: 'broker:29092'
+      CONNECT_REST_ADVERTISED_HOST_NAME: connect-01
       CONNECT_REST_PORT: 8083
-      CONNECT_GROUP_ID: compose-connect-a-cluster  # Same group ID for both nodes
-      CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-a-configs  # Shared config topic
-      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 2
+      CONNECT_GROUP_ID: compose-connect01-group
+      CONNECT_CONFIG_STORAGE_TOPIC: docker-connect01-configs
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_OFFSET_FLUSH_INTERVAL_MS: 10000
-      CONNECT_OFFSET_STORAGE_TOPIC: docker-connect-a-offsets  # Shared offset topic
-      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 2
-      CONNECT_STATUS_STORAGE_TOPIC: docker-connect-a-status  # Shared status topic
-      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 2
+      CONNECT_OFFSET_STORAGE_TOPIC: docker-connect01-offsets
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_TOPIC: docker-connect01-status
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
       CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
       CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      # CLASSPATH required due to CC-2422
       CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-7.1.0.jar
       CONNECT_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
       CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components,/connect-plugins"
+      #CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
       CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR,org.apache.kafka.connect=DEBUG
       CONNECT_ZOOKEEPER_CONNECT: zookeeper:2181
+#    command:
+#      - bash 
+#      - -c 
+#      - |
+#        echo "Installing connector plugins"
+#        confluent-hub install --no-prompt debezium/debezium-connector-sqlserver:latest
+#        #
+#        echo "Launching Kafka Connect worker"
+#        /etc/confluent/docker/run & 
+#        #
+#        sleep infinity
     networks:
       integration:
-        ipv4_address: 172.199.0.21
+        ipv4_address: 172.199.0.25
 
-  connect-a02:
-    image: cnfldemos/cp-server-connect-datagen:0.5.3-7.1.0
-    hostname: connect-a02
-    container_name: connect-a02
+  connect-02:
+    # profiles: ["kafka", "all"]
+    # image: cnfldemos/cp-server-connect-datagen:0.5.3-7.1.0
+    image: quay.io/larryloi/cp-server-connect-7.8.0-cust01:latest
+    hostname: connect-02
+    container_name: connect-02
     depends_on:
-      - broker1
+      - broker
       - schema-registry
     ports:
       - "8084:8083"
-    volumes:
-      - ./connect-plugins_v01:/connect-plugins
+#     volumes:
+#       - ./connect-plugins_v02:/connect-plugins
     environment:
-      CONNECT_BOOTSTRAP_SERVERS: 'broker1:29092,broker2:29092'
-      CONNECT_REST_ADVERTISED_HOST_NAME: connect-a02
-      CONNECT_REST_PORT: 8083  # Unique port for this node
-      CONNECT_GROUP_ID: compose-connect-a-cluster  # Same group ID as connect-a01
-      CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-a-configs  # Shared config topic
-      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 2
+      CONNECT_BOOTSTRAP_SERVERS: 'broker:29092'
+      CONNECT_REST_ADVERTISED_HOST_NAME: connect-02
+      CONNECT_REST_PORT: 8083
+      CONNECT_GROUP_ID: compose-connect02-group
+      CONNECT_CONFIG_STORAGE_TOPIC: docker-connect02-configs
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_OFFSET_FLUSH_INTERVAL_MS: 10000
-      CONNECT_OFFSET_STORAGE_TOPIC: docker-connect-a-offsets  # Shared offset topic
-      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 2
-      CONNECT_STATUS_STORAGE_TOPIC: docker-connect-a-status  # Shared status topic
-      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 2
+      CONNECT_OFFSET_STORAGE_TOPIC: docker-connect02-offsets
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_TOPIC: docker-connect02-status
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
       CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
       CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      # CLASSPATH required due to CC-2422
       CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-7.1.0.jar
       CONNECT_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
       CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components,/connect-plugins"
+      #CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
       CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR,org.apache.kafka.connect=DEBUG
       CONNECT_ZOOKEEPER_CONNECT: zookeeper:2181
+#    command:
+#      - bash 
+#      - -c 
+#      - |
+#        echo "Installing connector plugins"
+#        confluent-hub install --no-prompt debezium/debezium-connector-sqlserver:latest
+#        #
+#        echo "Launching Kafka Connect worker"
+#        /etc/confluent/docker/run & 
+#        #
+#        sleep infinity
     networks:
       integration:
-        ipv4_address: 172.199.0.22
-
-
+        ipv4_address: 172.199.0.26
 
 
   control-center:
@@ -192,17 +182,17 @@ services:
     hostname: control-center
     container_name: control-center
     depends_on:
-      - broker1
+      - broker
       - schema-registry
       - ksqldb-server
-      - connect-a01
-      - connect-a02
+      - connect-01
+      - connect-02
     ports:
       - "9021:9021"
     environment:
-      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker1:29092,broker2:29092'
-      CONTROL_CENTER_CONNECT_CONNECT-A_CLUSTER: 'connect-a01:8083,connect-a02:8083'
-      # CONTROL_CENTER_CONNECT_CONNECT-DATA-SERVICE-CP-7-8_CLUSTER: 'connect-02:8083'
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker:29092'
+      CONTROL_CENTER_CONNECT_CONNECT-DEFAULT_CLUSTER: 'connect-01:8083'
+      CONTROL_CENTER_CONNECT_CONNECT-DATA-SERVICE-CP-7-8_CLUSTER: 'connect-02:8083'
       CONTROL_CENTER_KSQL_KSQLDB1_URL: "http://ksqldb-server:8088"
       CONTROL_CENTER_KSQL_KSQLDB1_ADVERTISED_URL: "http://localhost:8088"
       CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
@@ -213,7 +203,7 @@ services:
       PORT: 9021
     networks:
       integration:
-        ipv4_address: 172.199.0.8
+        ipv4_address: 172.199.0.6
 
 
   ksqldb-server:
@@ -222,28 +212,26 @@ services:
     hostname: ksqldb-server
     container_name: ksqldb-server
     depends_on:
-      - broker1
-      - broker2
-      - connect-a01
-      - connect-a02
+      - broker
+      - connect-01
     ports:
       - "8088:8088"
     environment:
       KSQL_CONFIG_DIR: "/etc/ksql"
-      KSQL_BOOTSTRAP_SERVERS: "broker1:29092,broker2:29092"
+      KSQL_BOOTSTRAP_SERVERS: "broker:29092"
       KSQL_HOST_NAME: ksqldb-server
       KSQL_LISTENERS: "http://0.0.0.0:8088"
       KSQL_CACHE_MAX_BYTES_BUFFERING: 0
       KSQL_KSQL_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
       KSQL_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
       KSQL_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
-      KSQL_KSQL_CONNECT_URL: "http://connect-a01:8083,http://connect-a02:8084"
+      KSQL_KSQL_CONNECT_URL: "http://connect-01:8083"
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_REPLICATION_FACTOR: 1
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: 'true'
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: 'true'
     networks:
       integration:
-        ipv4_address: 172.199.0.9
+        ipv4_address: 172.199.0.7
 
 
   ksqldb-cli:
@@ -252,16 +240,14 @@ services:
     container_name: ksqldb-cli
     hostname: ksqldb-cli
     depends_on:
-      - broker1
-      - broker2
-      - connect-a01
-      - connect-a02
+      - broker
+      - connect-01
       - ksqldb-server
     entrypoint: /bin/sh
     tty: true
     networks:
       integration:
-        ipv4_address: 172.199.0.10
+        ipv4_address: 172.199.0.8
 
 
   ksql-datagen:
@@ -271,13 +257,11 @@ services:
     container_name: ksql-datagen
     depends_on:
       - ksqldb-server
-      - broker1
-      - broker2
+      - broker
       - schema-registry
-      - connect-a01
-      - connect-a02
+      - connect-01
     command: "bash -c 'echo Waiting for Kafka to be ready... && \
-                       cub kafka-ready -b broker1:29092 1 40 && \
+                       cub kafka-ready -b broker:29092 1 40 && \
                        echo Waiting for Confluent Schema Registry to be ready... && \
                        cub sr-ready schema-registry 8081 40 && \
                        echo Waiting a few seconds for topic creation to finish... && \
@@ -285,20 +269,19 @@ services:
                        tail -f /dev/null'"
     environment:
       KSQL_CONFIG_DIR: "/etc/ksql"
-      STREAMS_BOOTSTRAP_SERVERS: broker1:29092,broker2:29092
+      STREAMS_BOOTSTRAP_SERVERS: broker:29092
       STREAMS_SCHEMA_REGISTRY_HOST: schema-registry
       STREAMS_SCHEMA_REGISTRY_PORT: 8081
     networks:
       integration:
-        ipv4_address: 172.199.0.11
+        ipv4_address: 172.199.0.9
 
 
   rest-proxy:
     # profiles: ["kafka", "all"]
     image: confluentinc/cp-kafka-rest:7.1.0
     depends_on:
-      - broker1
-      - broker2
+      - broker
       - schema-registry
     ports:
       - 8082:8082
@@ -306,12 +289,75 @@ services:
     container_name: rest-proxy
     environment:
       KAFKA_REST_HOST_NAME: rest-proxy
-      KAFKA_REST_BOOTSTRAP_SERVERS: 'broker1:29092,broker2:29092'
+      KAFKA_REST_BOOTSTRAP_SERVERS: 'broker:29092'
       KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
     networks:
       integration:
-        ipv4_address: 172.199.0.12
+        ipv4_address: 172.199.0.10
+
+
+#  st-master:
+#    profiles: ["seatunnel", "all"]
+#    image: apache/seatunnel
+#    hostname: seatunnel-master
+#    container_name: seatunnel-master
+#    environment:
+#      - TZ=Asia/Macau
+#      - ST_DOCKER_MEMBER_LIST=172.199.0.11,172.199.0.12,172.199.0.13
+#    entrypoint: >
+#      /bin/sh -c "
+#      /opt/seatunnel/bin/seatunnel-cluster.sh -r master -DJvmOption=\"-Xms2G -Xmx2G\"
+#      "    
+#    ports:
+#      - "5701:5701"
+#    volumes:
+#      - ../seatunnel-lab/config:/opt/seatunnel/config
+#      - ../seatunnel-lab/shared-connectors:/shared-connectors
+#      - ../seatunnel-lab/JOBS:/opt/seatunnel/JOBS
+#    networks:
+#      integration:
+#        ipv4_address: 172.199.0.11
+#
+#  st-worker1:
+#    profiles: ["seatunnel", "all"]
+#    image: apache/seatunnel
+#    hostname: seatunnel-worker-1
+#    container_name: seatunnel-worker-1
+#    environment:
+#      - TZ=Asia/Macau
+#      - ST_DOCKER_MEMBER_LIST=172.199.0.11,172.199.0.12,172.199.0.13
+#    entrypoint: >
+#      /bin/sh -c "
+#      /opt/seatunnel/bin/seatunnel-cluster.sh -r worker -DJvmOption=\"-Xms2G -Xmx2G\"
+#      " 
+#    volumes:
+#      - ../seatunnel-lab/config:/opt/seatunnel/config
+#    depends_on:
+#      - st-master
+#    networks:
+#      integration:
+#        ipv4_address: 172.199.0.12
+#
+#  st-worker2:
+#    profiles: ["seatunnel", "all"]
+#    image: apache/seatunnel
+#    hostname: seatunnel-worker-2
+#    container_name: seatunnel-worker-2
+#    environment:
+#      - TZ=Asia/Macau
+#      - ST_DOCKER_MEMBER_LIST=172.199.0.11,172.199.0.12,172.199.0.13
+#    entrypoint: >
+#      /bin/sh -c "
+#      /opt/seatunnel/bin/seatunnel-cluster.sh -r worker -DJvmOption=\"-Xms2G -Xmx2G\"
+#      " 
+#    volumes:
+#      - ../seatunnel-lab/config:/opt/seatunnel/config
+#    depends_on:
+#      - st-master
+#    networks:
+#      integration:
+#        ipv4_address: 172.199.0.13
 
 
 # networks:
@@ -327,6 +373,5 @@ networks:
     external: true
 
 volumes:
-  kafka-broker1-data:
-  kafka-broker2-data:
+  kafka-broker-data:
   kafka-schema-registry-data:

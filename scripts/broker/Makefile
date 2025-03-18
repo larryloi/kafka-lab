@@ -9,7 +9,7 @@ topic.monit:
 topic.desc:
 	docker exec -it broker kafka-topics --describe --bootstrap-server $(bootserverUrl) --topic $(name)
 
-topic.rm:
+topic.del:
 	docker exec -it broker kafka-topics --delete --bootstrap-server $(bootserverUrl) --topic $(name)
 
 consumer.list:
