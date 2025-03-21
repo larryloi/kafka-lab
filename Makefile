@@ -11,26 +11,23 @@ volume.list:
 ps:
 	docker compose ps
 
-up:
-	docker compsoe up -d
+up: 
+	docker compose up -d
 
 down:
-	docker compose down 
+	docker compose down
 
-# up: 
-# 	docker compose --profile ${p} up -d
-# 
-# down:
-# 	docker compose --profile ${p} down
-# 
-# all.up:
-# 	docker compose --profile all up -d
-# 
-# all.down:
-# 	docker compose --profile all down
+all.up:
+	docker compose --profile all up -d
+
+all.down:
+	docker compose --profile all down
 
 logs:
 	docker compose logs -f ${name}
 
-connect.build:
-	docker build -t quay.io/larryloi/cp-server-connect-7.8.0-cust01:latest -f ./Dockerfile-connect-cust01 .
+connect.build.780:
+	docker build -t quay.io/larryloi/cp-server-connect-7.8.0-kas:latest -f ./Dockerfile-connect-cp-780 .
+
+connect.build.760:
+	docker build -t quay.io/larryloi/cp-server-connect-7.6.0-kas:latest -f ./Dockerfile-connect-cp-760 .

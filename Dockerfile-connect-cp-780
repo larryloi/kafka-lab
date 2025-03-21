@@ -1,0 +1,30 @@
+FROM confluentinc/cp-server-connect:7.8.0
+
+# Switch to root user to install packages
+USER root
+
+# Install Java 17 and Maven using yum
+RUN yum update -y && \
+    yum install -y java-17-openjdk-devel maven && \
+    yum clean all
+
+# Installing connector plugins
+RUN confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:10.8.0 && \
+    confluent-hub install --no-prompt debezium/debezium-connector-sqlserver:2.5.4 
+
+# Installing Debezium MySQL Connector from tar.gz downloaded manually
+RUN curl -L "https://repo1.maven.org/maven2/io/debezium/debezium-connector-mysql/3.0.7.Final/debezium-connector-mysql-3.0.7.Final-plugin.tar.gz" -o /tmp/debezium-connector-mysql.tar.gz && \
+    mkdir -p /usr/share/confluent-hub-components/debezium-connector-mysql && \
+    tar -xzf /tmp/debezium-connector-mysql.tar.gz -C /usr/share/confluent-hub-components/debezium-connector-mysql && \
+    rm -f /tmp/debezium-connector-mysql.tar.gz && \
+    curl -L "https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/9.1.0/mysql-connector-j-9.1.0.jar" -o /usr/share/confluent-hub-components/confluentinc-kafka-connect-jdbc/lib/mysql-connector-j-9.1.0.jar
+
+# Set JAVA_HOME environment variable
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+
+# Update PATH
+ENV PATH="$JAVA_HOME/bin:${PATH}"
+
+# Switch back to the non-root user
+USER appuser
+

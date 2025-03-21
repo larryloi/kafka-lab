@@ -114,7 +114,6 @@ services:
   connect-01:
     # profiles: ["kafka", "all"]
     image: cnfldemos/cp-server-connect-datagen:0.5.3-7.1.0
-    # image: custom-connect:latest
     hostname: connect-01
     container_name: connect-01
     depends_on:
@@ -149,13 +148,13 @@ services:
       CONNECT_ZOOKEEPER_CONNECT: zookeeper:2181
     networks:
       integration:
-        ipv4_address: 172.199.0.6
+        ipv4_address: 172.199.0.21
 
 
   connect-02:
     # profiles: ["kafka", "all"]
     # image: cnfldemos/cp-server-connect-datagen:0.5.3-7.1.0
-    image: quay.io/larryloi/cp-server-connect-7.8.0-cust01:latest
+    image: quay.io/larryloi/cp-server-connect-7.8.0-kas:latest
     hostname: connect-02
     container_name: connect-02
     depends_on:
@@ -191,7 +190,7 @@ services:
 
     networks:
       integration:
-        ipv4_address: 172.199.0.7
+        ipv4_address: 172.199.0.22
 
 
   control-center:
@@ -221,7 +220,7 @@ services:
       PORT: 9021
     networks:
       integration:
-        ipv4_address: 172.199.0.8
+        ipv4_address: 172.199.0.6
 
 
   ksqldb-server:
@@ -249,7 +248,7 @@ services:
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: 'true'
     networks:
       integration:
-        ipv4_address: 172.199.0.9
+        ipv4_address: 172.199.0.7
 
 
   ksqldb-cli:
@@ -265,7 +264,7 @@ services:
     tty: true
     networks:
       integration:
-        ipv4_address: 172.199.0.10
+        ipv4_address: 172.199.0.8
 
 
   ksql-datagen:
@@ -292,7 +291,7 @@ services:
       STREAMS_SCHEMA_REGISTRY_PORT: 8081
     networks:
       integration:
-        ipv4_address: 172.199.0.11
+        ipv4_address: 172.199.0.9
 
 
   rest-proxy:
@@ -312,7 +311,7 @@ services:
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
     networks:
       integration:
-        ipv4_address: 172.199.0.12
+        ipv4_address: 172.199.0.10
 
 
 # networks:

@@ -63,13 +63,13 @@ services:
       - zookeeper
     ports:
       - "29093:29092"
-      - "9093:9092"
+      - "9093:9093"
       - "9102:9101"
     environment: 
       KAFKA_BROKER_ID: 2
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker2:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker2:29092,PLAINTEXT_HOST://localhost:9093
       KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
@@ -213,7 +213,7 @@ services:
       PORT: 9021
     networks:
       integration:
-        ipv4_address: 172.199.0.8
+        ipv4_address: 172.199.0.6
 
 
   ksqldb-server:
@@ -243,7 +243,7 @@ services:
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: 'true'
     networks:
       integration:
-        ipv4_address: 172.199.0.9
+        ipv4_address: 172.199.0.7
 
 
   ksqldb-cli:
@@ -261,7 +261,7 @@ services:
     tty: true
     networks:
       integration:
-        ipv4_address: 172.199.0.10
+        ipv4_address: 172.199.0.8
 
 
   ksql-datagen:
@@ -290,7 +290,7 @@ services:
       STREAMS_SCHEMA_REGISTRY_PORT: 8081
     networks:
       integration:
-        ipv4_address: 172.199.0.11
+        ipv4_address: 172.199.0.9
 
 
   rest-proxy:
@@ -311,7 +311,7 @@ services:
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
     networks:
       integration:
-        ipv4_address: 172.199.0.12
+        ipv4_address: 172.199.0.10
 
 
 # networks:
