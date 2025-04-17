@@ -3,7 +3,7 @@
   "config": {
     "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
 
-    "connection.url": "jdbc:mysql://192.168.138.16/dw_ingest_kafka01",
+    "connection.url": "jdbc:mysql://192.168.138.15/dw_ingest_kafka01",
     "connection.user": "kafka_sink",
     "connection.password": "Abcd1234",
     "tasks.max": "1",
