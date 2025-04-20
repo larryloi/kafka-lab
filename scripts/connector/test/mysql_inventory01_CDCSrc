@@ -1,31 +1,31 @@
 {
-  "name": "mysql_inventory_cp_avro_CDCSrc_84",
+  "name": "mysql_inventory01_CDCSrc",
   "config": {
     "connector.class": "io.debezium.connector.mysql.MySqlConnector",
 
     "tasks.max" : "1",
     "poll.interval.ms": "15000",
 
-    "database.hostname": "dev02.kaskade.local",
+    "database.hostname": "db01.kaskade.local",
     "database.port": "3306",
     "database.user": "kafka_src",
     "database.password": "Abcd1234",
     "database.server.id": "184058",
-    "database.server.name": "inventory00",
-    "database.include.list": "inventory00",
+    "database.server.name": "inventory01",
+    "database.include.list": "inventory01",
     "database.encrypt": "false",
-    "table.include.list": "inventory00.orders,inventory00.suppliers",
+    "table.include.list": "inventory01.orders",
 
-    "topic.prefix": "mysql_inventory_cp_avro_CDCSrc_84",
+    "topic.prefix": "mysql_inventory01_CDCSrc",
     "topic.creation.enable": "true",
-    "topic.creation.default.replication.factor": 1,
-    "topic.creation.default.partitions": 3,
-    "topic.creation.default.cleanup.policy": "compact",
+    "topic.creation.default.replication.factor": 1,  
+    "topic.creation.default.partitions": 3,  
+    "topic.creation.default.cleanup.policy": "compact",  
     "topic.creation.default.compression.type": "lz4",
     "topic.delimiter": "_",
 
-    "schema.history.internal.kafka.bootstrap.servers": "broker1:29092",
-    "schema.history.internal.kafka.topic": "mysql_inventory_cp_avro_CDCSrc_84_schemahistory",
+    "schema.history.internal.kafka.bootstrap.servers": "broker1:29092,broker2:29092",
+    "schema.history.internal.kafka.topic": "mysql_inventory01_CDCSrc_schemahistory",
 
     "database.history.kafka.topic.auto.create": "true",
 
@@ -48,8 +48,8 @@
     "transforms": "dropPrefix",
 
     "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
-    "transforms.dropPrefix.regex":"mysql_inventory_cp_avro_CDCSrc_84.inventory.(.*)",
-    "transforms.dropPrefix.replacement":"mysql_inventory_cp_avro_CDCSrc_84_$1"
+    "transforms.dropPrefix.regex":"mysql_inventory01_CDCSrc.inventory.(.*)",
+    "transforms.dropPrefix.replacement":"mysql_inventory01_CDCSrc_$1"
   }
 }
 

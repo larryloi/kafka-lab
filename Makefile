@@ -26,8 +26,10 @@ all.down:
 logs:
 	docker compose logs -f ${name}
 
-connect.build.780:
-	docker build -t quay.io/larryloi/cp-server-connect-7.8.0-kas:latest -f ./Dockerfile-connect-cp-780 .
 
-connect.build.760:
-	docker build -t quay.io/larryloi/cp-server-connect-7.6.0-kas:latest -f ./Dockerfile-connect-cp-760 .
+connector_image = cp-connect-7.6.0-mysql-3.0.8
+# connector_image = cp-connect-7.8.0-mysql-3.0.8
+connector_tag = kas-0.1.0
+
+build.connector:
+	docker build -t quay.io/larryloi/${connector_image}:${connector_tag} -f ./Dockerfile-${connector_image} .
