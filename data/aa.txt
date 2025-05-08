@@ -1,0 +1,2 @@
+currency,unit_per_usd,usd_per_unit,mop_per_unit,unit_per_mop
+MOP,7.99972339,0.12500432,,

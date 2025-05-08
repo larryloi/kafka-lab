@@ -1,0 +1,19 @@
+{
+  "name": "csv_source",
+  "config": {
+    "connector.class": "com.github.jcustenborder.kafka.connect.spooldir.SpoolDirCsvSourceConnector",
+    "tasks.max": "1",
+    "topic": "emps_topic",
+    "input.file.pattern": "emp01.csv",
+    "input.path": "/data/input",
+    "finished.path": "/data/finished",
+    "error.path": "/data/error",
+    "csv.first.row.as.header": "true",
+    "key.schema": "{\"type\":\"struct\",\"fields\":[{\"field\":\"id\",\"type\":\"int32\",\"optional\":false}]}",
+    "value.schema": "{\"type\":\"struct\",\"fields\":[{\"field\":\"id\",\"type\":\"int32\",\"optional\":false},{\"field\":\"name\",\"type\":\"string\",\"optional\":true},{\"field\":\"hired_at\",\"type\":\"string\",\"optional\":true}]}",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    "csv.null.field.indicator": "EMPTY_SEPARATORS"
+  }
+}

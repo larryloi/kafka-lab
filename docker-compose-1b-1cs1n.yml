@@ -78,7 +78,7 @@ services:
 
   connect-01:
     # profiles: ["kafka", "all"]
-    image: quay.io/larryloi/cp-connect-7.6.0-mysql-3.0.8:kas-0.1.0
+    image: quay.io/larryloi/cp-connect-7.6.0-mysql-3.0.8-spooldir-2.0.65:kas-0.1.0
     hostname: connect-01
     container_name: connect-01
     depends_on:
@@ -87,7 +87,9 @@ services:
     ports:
       - "8083:8083"
     volumes:
-      - ./connect-plugins_a01:/connect-plugins
+      - ./data/input:/data/input
+      - ./data/finished:/data/finished
+      - ./data/error:/data/error
     environment:
       CONNECT_BOOTSTRAP_SERVERS: 'broker1:29092'
       CONNECT_REST_ADVERTISED_HOST_NAME: connect-01

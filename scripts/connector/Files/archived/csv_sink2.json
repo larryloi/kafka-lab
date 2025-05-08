@@ -1,0 +1,25 @@
+{
+  "name": "csv_sink2",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "tasks.max": "1",
+    "topics": "emps_topic5",
+    "connection.url": "jdbc:sqlserver://db01.kaskade.local:1433;databaseName=dwh",
+    "connection.user": "kafka_sink",
+    "connection.password": "Abcd1234",
+    "auto.create": "true",
+    "auto.evolve": "true",
+    "insert.mode": "upsert",
+    "pk.mode": "record_key",
+    "pk.fields": "id",
+    "table.name.format": "dwh.dbo.emp01",
+    "transforms": "CastHiredAt",
+    "transforms.CastHiredAt.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.CastHiredAt.field": "hired_at",
+    "transforms.CastHiredAt.format": "yyyy-MM-dd",
+    "transforms.CastHiredAt.target.type": "Timestamp",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081"
+  }
+}

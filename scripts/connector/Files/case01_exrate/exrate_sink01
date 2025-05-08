@@ -1,0 +1,21 @@
+{
+  "name": "exrate_sink01",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "tasks.max": "1",
+    "topics": "exrate_src01",
+    "connection.url": "jdbc:sqlserver://db01.kaskade.local:1433;databaseName=dwh",
+    "connection.user": "kafka_sink",
+    "connection.password": "Abcd1234",
+    "auto.create": "true",
+    "auto.evolve": "true",
+    "insert.mode": "UPSERT",
+    "pk.mode": "record_value",
+    "pk.fields": "yyyymm,currency",
+    "table.name.format": "dwh.dbo.exrate01",
+
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081"
+  }
+}

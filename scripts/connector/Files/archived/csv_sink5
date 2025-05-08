@@ -1,0 +1,21 @@
+
+{
+  "name": "csv_sink4",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "tasks.max": "1",
+    "topics": "emps_topic4",
+    "connection.url": "jdbc:sqlserver://db01.kaskade.local:1433;databaseName=dwh",
+    "connection.user": "kafka_sink",
+    "connection.password": "Abcd1234",
+    "auto.create": "true",
+    "auto.evolve": "true",
+    "insert.mode": "upsert",
+    "pk.mode": "record_key",
+    "pk.fields": "id",
+    "table.name.format": "dwh.dbo.emp01",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081"
+  }
+}

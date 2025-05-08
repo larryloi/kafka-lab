@@ -27,9 +27,10 @@ logs:
 	docker compose logs -f ${name}
 
 
-connector_image = cp-connect-7.6.0-mysql-3.0.8
+# connector_image = cp-connect-7.6.0-mysql-3.0.8
 # connector_image = cp-connect-7.8.0-mysql-3.0.8
+connector_image = cp-connect-7.6.0-mysql-3.0.8-spooldir-2.0.65
 connector_tag = kas-0.1.0
 
 build.connector:
-	docker build -t quay.io/larryloi/${connector_image}:${connector_tag} -f ./Dockerfile-${connector_image} .
+	docker build -t quay.io/larryloi/${connector_image}:${connector_tag} -f ./Dockerfiles/Dockerfile-${connector_image} .

@@ -1,0 +1,25 @@
+{
+  "name": "csv_source5",
+  "config": {
+    "connector.class": "com.github.jcustenborder.kafka.connect.spooldir.SpoolDirCsvSourceConnector",
+    "tasks.max": "1",
+    "topic": "emps_topic5",
+    "input.path": "/data/input",
+    "input.file.pattern": "emps01.csv",
+    "finished.path": "/data/finished",
+    "error.path": "/data/error",
+    "csv.first.row.as.header": "true",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "csv.null.field.indicator": "EMPTY_SEPARATORS",
+    "schema.generation.enabled": "true",
+    "file.minimum.age.ms": "0",
+    "key.field": "id",
+    "transforms": "CastHiredAt",
+    "transforms.CastHiredAt.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.CastHiredAt.field": "hired_at",
+    "transforms.CastHiredAt.format": "MM/dd/yyyy",
+    "transforms.CastHiredAt.target.type": "Date"
+  }
+}

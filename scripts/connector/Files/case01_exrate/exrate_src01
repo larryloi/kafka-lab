@@ -1,0 +1,23 @@
+{
+  "name": "exrate_src01",
+  "config": {
+    "connector.class": "com.github.jcustenborder.kafka.connect.spooldir.SpoolDirCsvSourceConnector",
+    "tasks.max": "1",
+    "topic": "exrate_src01",
+    "input.path": "/data/input",
+    "input.file.pattern": ".*\\.csv",
+    "finished.path": "/data/finished",
+    "error.path": "/data/error",
+    "csv.first.row.as.header": "true",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "csv.null.field.indicator": "EMPTY_SEPARATORS",
+    "schema.generation.enabled": "true",
+    "file.minimum.age.ms": "0",
+    "transforms": "CastTypes",
+    "transforms.CastTypes.type": "org.apache.kafka.connect.transforms.Cast$Value",
+    "transforms.CastTypes.spec": "yyyymm:string,currency:string,unit_per_usd:float64,usd_per_unit:float64,mop_per_unit:float64,unit_per_mop:float64"
+
+  }
+}

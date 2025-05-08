@@ -1,0 +1,1 @@
+echo -e "yyyymm,currency,unit_per_usd,usd_per_unit,mop_per_unit,unit_per_mop\n202405,CAD,7.76672174,0.12875445,1.03000000,0.97087379\n202405,EUR,7.99972339,0.12500432,1.000,1.000"> ./input/exrate202405.csv
