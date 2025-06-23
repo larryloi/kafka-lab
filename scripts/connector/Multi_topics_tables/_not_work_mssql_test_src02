@@ -1,26 +1,26 @@
 {
-  "name": "mssql_dbo_emp_DebeziumSrc",
+  "name": "mssql_test_src02b",
   "config": {
       "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
       "tasks.max" : "1",
       "poll.interval.ms": "15000",
  
-      "database.hostname" : "db01.kaskade.local",
+      "database.hostname" : "db02.kaskade.local",
       "database.port" : "1433",
-      "database.user" : "kafka_src",
+      "database.user" : "sa",
       "database.password" : "Abcd1234",
-      "database.names": "inventory",
+      "database.names": "company02",
       "database.encrypt": "false",
  
-      "topic.prefix": "mssql_dbo_emp_DebeziumSrc",
+      "topic.prefix": "mssql_test_src02b",
       "topic.delimiter": "_",
       "topic.creation.default.replication.factor": 1,
       "topic.creation.default.partitions": 3,
-      "topic.creation.default.cleanup.policy": "compact",
+      "topic.creation.default.cleanup.policy": "delete",
       "topic.creation.default.compression.type": "lz4",
  
-      "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
-      "schema.history.internal.kafka.topic": "mssql_dbo_emp_DebeziumSrc_schemahistory",
+      "schema.history.internal.kafka.bootstrap.servers": "broker1:29092",
+      "schema.history.internal.kafka.topic": "mssql_test_src02b_schemahistory",
 
       "database.history.kafka.topic.auto.create": "true",
  
@@ -32,7 +32,7 @@
       "value.converter.schema.registry.url": "http://schema-registry:8081",
       "value.converter.schemas.enable": "false",
  
-      "table.include.list": "dbo.emp",
+      "table.include.list": "dbo.depts,dbo.emps",
       "include.schema.changes": "true",
       "snapshot.mode": "initial",
       "tombstones.on.delete": "true",
@@ -41,9 +41,18 @@
       "errors.log.enable": "true",
       "errors.log.include.messages": "true",
 
-      "transforms": "dropPrefix",
+      "column.renames": "dbo.depts.deptsid:id,dbo.emps.empsid:id",
+
+      "transforms": "dropPrefix,renameKey,renameValue",
       "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
-      "transforms.dropPrefix.regex":"mssql_dbo_emp_DebeziumSrc.inventory.(.*)",
-      "transforms.dropPrefix.replacement":"mssql_dbo_emp_DebeziumSrc_$1"
+      "transforms.dropPrefix.regex":"mssql_test_src02b.company02.(.*)",
+      "transforms.dropPrefix.replacement":"mssql_test_src02b_$1",
+
+      "transforms.renameKey.type": "org.apache.kafka.connect.transforms.ReplaceField$Key",
+      "transforms.renameKey.renames": "dbo.depts.deptsid:id,dbo.emps.empsid:id",
+
+      "transforms.renameValue.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
+      "transforms.renameValue.renames": "dbo.depts.deptsid:id,dbo.emps.empsid:id"
+
       }
   }

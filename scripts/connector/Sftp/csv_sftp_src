@@ -1,0 +1,20 @@
+{
+  "name": "csv_sftp_src",
+  "config": {
+    "tasks.max": "1",
+    "connector.class": "io.confluent.connect.sftp.SftpCsvSourceConnector",
+    "cleanup.policy":"NONE",
+    "behavior.on.error":"IGNORE",
+    "input.path": "/C/Users/uploader/upload/input",
+    "error.path": "/C/Users/uploader/upload/error",
+    "finished.path": "/C/Users/uploader/upload/finished",
+    "input.file.pattern": "person.csv",
+    "sftp.username":"uploader@kaskade.local",
+    "sftp.password":"Abcd1234",
+    "sftp.host":"winsvr01",
+    "sftp.port":"22",
+    "kafka.topic": "csv_sftp_src_person",
+    "csv.first.row.as.header": "true",
+    "schema.generation.enabled": "true"
+  }
+}

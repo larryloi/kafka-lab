@@ -1,4 +1,4 @@
-include connector.conf
+include connect.conf
 
 list:
 	curl -X GET http://$(baseUrl)/$(objUrl)/| jq 'sort'

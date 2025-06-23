@@ -1,0 +1,46 @@
+{
+  "name": "mssql_test_src02_sink_01",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+
+    "connection.url": "jdbc:sqlserver://db02.kaskade.local:1433;databaseName=company_dwh",
+    "connection.user": "kafka_sink",
+    "connection.password": "Abcd1234",
+    "tasks.max": "1",
+
+    "topics": "mssql_test_src02_2_dbo_emps, mssql_test_src02_2_dbo_depts",
+
+    "auto.create": true,
+    "auto.evolve": true,
+
+    "insert.mode": "upsert",
+    "pk.mode": "record_key",
+    "pk.fields": "empsid,deptsid",
+    "delete.enabled": "true",
+    "selectMethod": "cursor",
+    
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url": "http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.schemas.enable": "false",
+
+    "transforms": "unwrap,SourceTsToDatetime,dropPrefix",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.add.fields": "op,table,lsn,source.ts_ms,server_id,file,pos",
+    "transforms.unwrap.add.headers": "db",
+    "transforms.unwrap.delete.handling.mode": "rewrite",
+
+    "transforms.SourceTsToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.SourceTsToDatetime.field": "__source_ts_ms",
+    "transforms.SourceTsToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.SourceTsToDatetime.target.type": "Timestamp",
+
+    "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.dropPrefix.regex":"mssql_test_src02_2_dbo_(.*)",
+    "transforms.dropPrefix.replacement":"$1"
+
+  }
+}
