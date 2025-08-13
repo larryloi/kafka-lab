@@ -1,0 +1,45 @@
+{
+  "name": "mssql_dbo_emps_DebeziumSrc_StarRockSink_emps_01",
+  "config": {
+    "connector.class": "com.starrocks.connector.kafka.StarRocksSinkConnector",
+    "tasks.max": "1",
+    "topics": "mssql_dbo_emps_DebeziumSrc_dbo_emps",
+
+    "starrocks.http.url": "10.2.2.208:1030",
+
+    "starrocks.topic2table.map": "mssql_dbo_emps_DebeziumSrc_dbo_emps:emps",
+
+    "starrocks.username": "kafka_sink",
+    "starrocks.password": "Abcd1234",
+    "starrocks.database.name": "ods",
+
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url": "http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.schemas.enable": "false",
+
+    "errors.tolerance": "all",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+
+    "sink.properties.format": "json",
+    "sink.properties.strip_outer_array": "true",
+
+    "transforms": "addfield,unwrap,HiredAtToDatetime",
+
+    "transforms.addfield.type": "com.starrocks.connector.kafka.transforms.AddOpFieldForDebeziumRecord",
+
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "true",
+    "transforms.unwrap.delete.handling.mode": "rewrite",
+
+    "transforms.HiredAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.HiredAtToDatetime.field": "hired_at",
+    "transforms.HiredAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.HiredAtToDatetime.target.type": "string"
+
+  }
+}

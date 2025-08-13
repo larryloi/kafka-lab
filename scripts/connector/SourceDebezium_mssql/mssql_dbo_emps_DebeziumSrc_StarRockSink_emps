@@ -1,0 +1,68 @@
+{
+  "name": "mssql_dbo_emps_DebeziumSrc_StarRockSink_emps",
+  "config": {
+    "connector.class": "com.starrocks.connector.kafka.StarRocksSinkConnector",
+    "tasks.max": "1",
+    "topics": "mssql_dbo_emps_DebeziumSrcdbo_emps",
+
+    "starrocks.http.url": "mpp01.kaskade.local:8030",
+
+    "starrocks.topic2table.map": "mssql_dbo_emps_DebeziumSrcdbo_emps:emps",
+
+    "starrocks.username": "kafka_sink",
+    "starrocks.password": "Abcd1234",
+    "starrocks.database.name": "ODS",
+
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url":"http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url":"http://schema-registry:8081",
+    "value.converter.schemas.enable": "false",
+
+
+
+    "pk.mode": "record_key",
+    "pk.fields": "id",
+    "table.name.format": "emps",
+    "fields.whitelist": "id,dept_id,first_name,last_name,hired_at,email,__db,__schema,__table,__source_ts_ms,__ts_ms,__deleted",
+
+    "sink.properties.strip_outer_array": "true",
+    "sink.properties.format": "json",
+
+    "errors.tolerance": "all",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+
+    "transforms": "UpsertAt,unwrap,addfield,HiredAtToDatetime,SoursTsToDatetime,TsToDatetime",
+
+    "transforms.UpsertAt.type": "org.apache.kafka.connect.transforms.InsertField$Value",
+    "transforms.UpsertAt.timestamp.field": "upsert_at",
+    "transforms.UpsertAt.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.UpsertAt.target.type": "string",
+
+    "transforms.addfield.type": "com.starrocks.connector.kafka.transforms.AddOpFieldForDebeziumRecord",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.add.fields": "db,schema,table,source.ts_ms,ts_ms,",
+    "transforms.unwrap.drop.tombstones": "true",
+    "transforms.unwrap.delete.handling.mode": "rewrite",
+    "transforms.unwrap.add.headers": "db",
+
+    "transforms.HiredAtToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.HiredAtToDatetime.field": "hired_at",
+    "transforms.HiredAtToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.HiredAtToDatetime.target.type": "string",
+
+    "transforms.SoursTsToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.SoursTsToDatetime.field": "__source_ts_ms",
+    "transforms.SoursTsToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.SoursTsToDatetime.target.type": "string",
+
+    "transforms.TsToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.TsToDatetime.field": "__ts_ms",
+    "transforms.TsToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.TsToDatetime.target.type": "string"
+
+  }
+}

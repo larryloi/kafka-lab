@@ -78,7 +78,8 @@ services:
 
   connect-01:
     # profiles: ["kafka", "all"]
-    image: cp-connect-7.6.0-sftp-3.2.14:kas-0.1.0
+    # image: cp-connect-7.6.0-sftp-3.2.14:kas-0.1.0
+    image: cp-connect-7.8.0-mysql-3.0.8-starrocks-1.0.4:kas-0.1.0
     hostname: connect-01
     container_name: connect-01
     depends_on:
@@ -238,6 +239,51 @@ services:
       integration:
         ipv4_address: 172.199.0.10
 
+
+#   flink-sql-client:
+#     image: cnfldemos/flink-sql-client-kafka:1.19.1-scala_2.12-java17
+#     depends_on:
+#       - flink-jobmanager
+#     hostname: flink-sql-client
+#     container_name: flink-sql-client
+#     environment:
+#       FLINK_JOBMANAGER_HOST: flink-jobmanager
+#     networks:
+#       integration:
+#         ipv4_address: 172.199.0.70
+# 
+#   flink-jobmanager:
+#     image: cnfldemos/flink-kafka:1.19.1-scala_2.12-java17
+#     hostname: flink-jobmanager
+#     container_name: flink-jobmanager
+#     ports:
+#     - 9081:9081
+#     command: jobmanager
+#     environment:
+#     - |
+#       FLINK_PROPERTIES=
+#       jobmanager.rpc.address: flink-jobmanager
+#       rest.bind-port: 9081
+#     networks:
+#       integration:
+#         ipv4_address: 172.199.0.71
+# 
+#   flink-taskmanager:
+#     image: cnfldemos/flink-kafka:1.19.1-scala_2.12-java17
+#     hostname: flink-taskmanager
+#     container_name: flink-taskmanager
+#     depends_on:
+#     - flink-jobmanager
+#     command: taskmanager
+#     scale: 1
+#     environment:
+#     - |
+#       FLINK_PROPERTIES=
+#       jobmanager.rpc.address: flink-jobmanager
+#       taskmanager.numberOfTaskSlots: 10
+#     networks:
+#       integration:
+#         ipv4_address: 172.199.0.72
 
 # networks:
 #   integration:

@@ -19,7 +19,7 @@
       "topic.creation.default.cleanup.policy": "compact",
       "topic.creation.default.compression.type": "lz4",
  
-      "schema.history.internal.kafka.bootstrap.servers": "broker:29092",
+      "schema.history.internal.kafka.bootstrap.servers": "broker1:29092",
       "schema.history.internal.kafka.topic": "mssql_INV_cp_avro_DebeziumSrc02_schemahistory",
 
       "database.history.kafka.topic.auto.create": "true",
@@ -32,7 +32,7 @@
       "value.converter.schema.registry.url": "http://schema-registry:8081",
       "value.converter.schemas.enable": "false",
  
-      "table.include.list": "INV.orders_demo00",
+      "table.include.list": "INV.orders",
       "include.schema.changes": "true",
       "snapshot.mode": "initial",
       "tombstones.on.delete": "true",
@@ -43,7 +43,7 @@
 
       "transforms": "dropPrefix",
       "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
-      "transforms.dropPrefix.regex":"mssql_INV_cp_avro_DebeziumSrc02.inventory.(.*)",
+      "transforms.dropPrefix.regex":"mssql_INV_cp_avro_DebeziumSrc02_inventory_INV_(.*)",
       "transforms.dropPrefix.replacement":"mssql_INV_cp_avro_DebeziumSrc02_$1"
       }
   }

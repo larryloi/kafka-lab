@@ -27,12 +27,12 @@ all.down:
 logs:
 	docker compose logs -f ${name}
 
-
 # CONNECT_IMAGE = cp-connect-7.6.0-mysql-3.0.8
 # CONNECT_IMAGE = cp-connect-7.8.0-mysql-3.0.8
-CONNECT_IMAGE = cp-connect-7.6.0-sftp-3.2.14
+# CONNECT_IMAGE = cp-connect-7.6.0-sftp-3.2.14
+# CONNECT_IMAGE = cp-connect-7.6.0-mysql-3.0.8-spooldir-2.0.65
+CONNECT_IMAGE = cp-connect-7.8.0-mysql-3.0.8-starrocks-1.0.4
 CONNECT_TAG = kas-0.1.0
-
 
 build.connect:
 	docker build -t ${CONNECT_IMAGE}:${CONNECT_TAG} -f ./Dockerfiles/Dockerfile-${CONNECT_IMAGE} .

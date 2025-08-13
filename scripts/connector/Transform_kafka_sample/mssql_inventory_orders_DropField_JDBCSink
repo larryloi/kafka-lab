@@ -1,0 +1,54 @@
+{
+  "name": "mssql_inventory_orders_DropField_JDBCSink",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+
+    "connection.url": "jdbc:sqlserver://db01.kaskade.local:1433;databaseName=dwh",
+    "connection.user": "kafka_sink",
+    "connection.password": "Abcd1234",
+    "tasks.max": "1",
+
+    "topics": "mssql_INV_cp_avro_DebeziumSrc02_orders",
+
+    "auto.create": true,
+    "auto.evolve": true,
+
+    "insert.mode": "upsert",
+    "pk.mode": "record_key",
+    "pk.fields": "id",
+    "delete.enabled": "true",
+    "selectMethod": "cursor",
+    
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url": "http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.schemas.enable": "false",
+
+    "transforms": "unwrap,CreatedDatetime,SourceTsToDatetime,dropPrefix,DropFields",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.add.fields": "op,table,lsn,source.ts_ms,server_id,file,pos",
+    "transforms.unwrap.add.headers": "db",
+    "transforms.unwrap.delete.handling.mode": "rewrite",
+
+    "transforms.CreatedDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.CreatedDatetime.field": "created_at",
+    "transforms.CreatedDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.CreatedDatetime.target.type": "Timestamp",
+
+    "transforms.SourceTsToDatetime.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "transforms.SourceTsToDatetime.field": "__source_ts_ms",
+    "transforms.SourceTsToDatetime.format": "yyyy-MM-dd HH:mm:ss",
+    "transforms.SourceTsToDatetime.target.type": "Timestamp",
+
+    "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.dropPrefix.regex":"mssql_INV_cp_avro_DebeziumSrc02_(.*)",
+    "transforms.dropPrefix.replacement":"$1",
+
+    "transforms.DropFields.type":"org.apache.kafka.connect.transforms.ReplaceField$Value",
+    "transforms.DropFields.blacklist": "status,issued_at,completed_at"
+
+  }
+}

@@ -5,7 +5,7 @@
       "tasks.max" : "1",
       "poll.interval.ms": "15000",
  
-      "database.hostname" : "db02.kaskade.local",
+      "database.hostname" : "db01.kaskade.local",
       "database.port" : "1433",
       "database.user" : "kafka_src",
       "database.password" : "Abcd1234",
@@ -32,7 +32,7 @@
       "value.converter.schema.registry.url": "http://schema-registry:8081",
       "value.converter.schemas.enable": "false",
  
-      "table.include.list": "dbo.emps,dbo.depts",
+      "table.include.list": "dbo.users",
       "include.schema.changes": "true",
       "snapshot.mode": "initial",
       "tombstones.on.delete": "true",
