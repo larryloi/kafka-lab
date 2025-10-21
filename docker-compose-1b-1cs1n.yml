@@ -79,7 +79,7 @@ services:
   connect-01:
     # profiles: ["kafka", "all"]
     # image: cp-connect-7.6.0-sftp-3.2.14:kas-0.1.0
-    image: cp-connect-7.8.0-mysql-3.0.8-starrocks-1.0.4:kas-0.1.0
+    image: cp-connect-7.8.0-mysql-3.0.8-mongodb-3.1.2:kas-0.1.0
     hostname: connect-01
     container_name: connect-01
     depends_on:
@@ -241,7 +241,8 @@ services:
 
 
 #   flink-sql-client:
-#     image: cnfldemos/flink-sql-client-kafka:1.19.1-scala_2.12-java17
+#     # image: cnfldemos/flink-sql-client-kafka:1.19.1-scala_2.12-java17
+#     image: confluentinc/cp-flink:1.20.2-cp1-java17
 #     depends_on:
 #       - flink-jobmanager
 #     hostname: flink-sql-client
@@ -253,7 +254,8 @@ services:
 #         ipv4_address: 172.199.0.70
 # 
 #   flink-jobmanager:
-#     image: cnfldemos/flink-kafka:1.19.1-scala_2.12-java17
+#     # image: cnfldemos/flink-kafka:1.19.1-scala_2.12-java17
+#     image: confluentinc/cp-flink:1.20.2-cp1-java17
 #     hostname: flink-jobmanager
 #     container_name: flink-jobmanager
 #     ports:
@@ -269,7 +271,8 @@ services:
 #         ipv4_address: 172.199.0.71
 # 
 #   flink-taskmanager:
-#     image: cnfldemos/flink-kafka:1.19.1-scala_2.12-java17
+#     # image: cnfldemos/flink-kafka:1.19.1-scala_2.12-java17
+#     image: confluentinc/cp-flink:1.20.2-cp1-java17
 #     hostname: flink-taskmanager
 #     container_name: flink-taskmanager
 #     depends_on:
@@ -300,4 +303,3 @@ networks:
 volumes:
   kafka-broker1-data:
   kafka-schema-registry-data:
-

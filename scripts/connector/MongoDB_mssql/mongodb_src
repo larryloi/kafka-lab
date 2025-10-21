@@ -1,0 +1,43 @@
+{
+  "config": {
+    "auto.create.topics.enable": "true",
+    "change.stream.full.document": "default",
+    "change.stream.full.document.before.change": "required",
+    "collection": "users",
+    "connection.uri": "mongodb://root:Abcd1234@db01:28017",
+    "connector.class": "com.mongodb.kafka.connect.MongoSourceConnector",
+    "copy-existing": "true",
+    "database": "inventory",
+    "errors.log.include-messages": "true",
+    "errors.tolerance": "all",
+    "heartbeat.interval.ms": "60000",
+
+    "mongo.errors.log.enable": "true",
+
+    "output.format.key": "schema",
+    "output.format.value": "schema",
+
+    "publish.full.document.only": "false",
+    "server.api.deprecation.errors": "true",
+    "server.api.strict": "true",
+    "server.api.version": "1",
+    "tasks.max": "3",
+    "topic.creation.default.cleanup.policy": "compact",
+    
+    "topic.creation.default.partitions": "1",
+    "topic.creation.default.replication.factor": "1",
+    "topic-namespace.map": "{\"inventory.users\": \"users\"}",
+    "topic-prefix": "mongodb_users_src",
+    "transforms": "",
+
+    "key-converter": "io.confluent.connect.json.JsonSchemaConverter",
+    "key.converter.schema.registry.url": "http://schema-registry:8081",
+    "key.converter.schemas.enable": "false",
+
+    "value converter,schema.enable": "true",
+    "value-converter": "io.confluent.connect.json.JsonSchemaConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.schemas.enable": "false"
+  },
+  "name": "mongodb_users_src"
+}

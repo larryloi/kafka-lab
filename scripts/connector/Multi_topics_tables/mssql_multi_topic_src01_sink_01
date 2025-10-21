@@ -1,5 +1,5 @@
 {
-  "name": "mssql_test_src01_sink_01",
+  "name": "mssql_multi_topic_src01_sink_01",
   "config": {
     "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
 
@@ -8,7 +8,7 @@
     "connection.password": "Abcd1234",
     "tasks.max": "1",
 
-    "topics": "mssql_test_src01_dbo_emps, mssql_test_src01_dbo_depts",
+    "topics": "mssql_multi_topic_src01_dbo_depts, mssql_multi_topic_src01_dbo_emps",
 
     "auto.create": true,
     "auto.evolve": true,
@@ -18,6 +18,7 @@
     "pk.fields": "id",
     "delete.enabled": "true",
     "selectMethod": "cursor",
+    "table.name.format":"company_dwh.DW_ETL.${topic}_kafka",
     
     "key.converter": "io.confluent.connect.avro.AvroConverter",
     "key.converter.schema.registry.url": "http://schema-registry:8081",
@@ -39,7 +40,7 @@
     "transforms.SourceTsToDatetime.target.type": "Timestamp",
 
     "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
-    "transforms.dropPrefix.regex":"mssql_test_src01_dbo_(.*)",
+    "transforms.dropPrefix.regex":"mssql_multi_topic_src01_dbo_(.*)",
     "transforms.dropPrefix.replacement":"$1"
 
   }

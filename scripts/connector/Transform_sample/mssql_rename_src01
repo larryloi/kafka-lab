@@ -1,5 +1,5 @@
 {
-  "name": "mssql_test_src01",
+  "name": "mssql_rename_src01",
   "config": {
       "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
       "tasks.max" : "1",
@@ -12,7 +12,7 @@
       "database.names": "company",
       "database.encrypt": "false",
  
-      "topic.prefix": "mssql_test_src01",
+      "topic.prefix": "mssql_rename_src01",
       "topic.delimiter": "_",
       "topic.creation.default.replication.factor": 1,
       "topic.creation.default.partitions": 3,
@@ -20,7 +20,7 @@
       "topic.creation.default.compression.type": "lz4",
  
       "schema.history.internal.kafka.bootstrap.servers": "broker1:29092",
-      "schema.history.internal.kafka.topic": "mssql_test_src01_schemahistory",
+      "schema.history.internal.kafka.topic": "mssql_rename_src01_schemahistory",
 
       "database.history.kafka.topic.auto.create": "true",
  
@@ -43,7 +43,7 @@
 
       "transforms": "dropPrefix",
       "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
-      "transforms.dropPrefix.regex":"mssql_test_src01.company.(.*)",
-      "transforms.dropPrefix.replacement":"mssql_test_src01_$1"
+      "transforms.dropPrefix.regex":"mssql_rename_src01.company.(.*)",
+      "transforms.dropPrefix.replacement":"mssql_rename_src01_$1"
       }
   }

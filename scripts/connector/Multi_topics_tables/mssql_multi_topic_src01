@@ -1,26 +1,26 @@
 {
-  "name": "mssql_dbo_emps_DebeziumSrc",
+  "name": "mssql_multi_topic_src01",
   "config": {
       "connector.class" : "io.debezium.connector.sqlserver.SqlServerConnector",
       "tasks.max" : "1",
       "poll.interval.ms": "15000",
  
-      "database.hostname" : "db01.kaskade.local",
+      "database.hostname" : "db02.kaskade.local",
       "database.port" : "1433",
       "database.user" : "kafka_src",
       "database.password" : "Abcd1234",
       "database.names": "company",
       "database.encrypt": "false",
  
-      "topic.prefix": "mssql_dbo_emps_DebeziumSrc",
+      "topic.prefix": "mssql_multi_topic_src01",
       "topic.delimiter": "_",
       "topic.creation.default.replication.factor": 1,
       "topic.creation.default.partitions": 3,
-      "topic.creation.default.cleanup.policy": "compact",
+      "topic.creation.default.cleanup.policy": "delete",
       "topic.creation.default.compression.type": "lz4",
  
       "schema.history.internal.kafka.bootstrap.servers": "broker1:29092",
-      "schema.history.internal.kafka.topic": "mssql_dbo_emps_DebeziumSrc_schemahistory",
+      "schema.history.internal.kafka.topic": "mssql_multi_topic_src01_schemahistory",
 
       "database.history.kafka.topic.auto.create": "true",
  
@@ -32,7 +32,7 @@
       "value.converter.schema.registry.url": "http://schema-registry:8081",
       "value.converter.schemas.enable": "false",
  
-      "table.include.list": "dbo.emps",
+      "table.include.list": "dbo.emps,dbo.depts",
       "include.schema.changes": "true",
       "snapshot.mode": "initial",
       "tombstones.on.delete": "true",
@@ -43,7 +43,7 @@
 
       "transforms": "dropPrefix",
       "transforms.dropPrefix.type":"org.apache.kafka.connect.transforms.RegexRouter",
-      "transforms.dropPrefix.regex":"mssql_dbo_emps_DebeziumSrc.company.(.*)",
-      "transforms.dropPrefix.replacement":"mssql_dbo_emps_DebeziumSrc_$1"
+      "transforms.dropPrefix.regex":"mssql_multi_topic_src01.company.(.*)",
+      "transforms.dropPrefix.replacement":"mssql_multi_topic_src01_$1"
       }
   }

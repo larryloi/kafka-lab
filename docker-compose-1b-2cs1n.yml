@@ -4,7 +4,7 @@
 services:
   zookeeper:
     # profiles: ["kafka", "all"]
-    image: confluentinc/cp-zookeeper:7.1.0
+    image: confluentinc/cp-zookeeper:7.7.3
     hostname: zookeeper
     container_name: zookeeper
     ports:
@@ -19,7 +19,7 @@ services:
 
   broker:
     # profiles: ["kafka", "all"]
-    image: confluentinc/cp-server:7.1.0
+    image: confluentinc/cp-server:7.7.3
     hostname: broker
     container_name: broker
     depends_on:
@@ -56,7 +56,7 @@ services:
 
   schema-registry:
     # profiles: ["kafka", "all"]
-    image: confluentinc/cp-schema-registry:7.1.0
+    image: confluentinc/cp-schema-registry:7.7.3
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
@@ -75,8 +75,9 @@ services:
 
   connect-01:
     # profiles: ["kafka", "all"]
-    image: cnfldemos/cp-server-connect-datagen:0.5.3-7.1.0
+    #image: cnfldemos/cp-server-connect-datagen:0.5.3-7.7.3
     # image: quay.io/larryloi/cp-server-connect-7.8.0-kas:latest
+    image: cp-connect-7.8.0-mysql-3.0.8-starrocks-1.0.4:kas-0.1.0
     hostname: connect-01
     container_name: connect-01
     depends_on:
@@ -102,7 +103,7 @@ services:
       CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
       CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
       # CLASSPATH required due to CC-2422
-      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-7.1.0.jar
+      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-7.7.3.jar
       CONNECT_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
       CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components,/connect-plugins"
@@ -126,8 +127,8 @@ services:
 
   connect-02:
     # profiles: ["kafka", "all"]
-    # image: cnfldemos/cp-server-connect-datagen:0.5.3-7.1.0
-    image: quay.io/larryloi/cp-server-connect-7.8.0-cust01:latest
+    # image: cnfldemos/cp-server-connect-datagen:0.5.3-7.7.3
+    image: cp-connect-7.6.0-sftp-3.2.14:kas-0.1.0
     hostname: connect-02
     container_name: connect-02
     depends_on:
@@ -153,7 +154,7 @@ services:
       CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
       CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
       # CLASSPATH required due to CC-2422
-      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-7.1.0.jar
+      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-7.7.3.jar
       CONNECT_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
       CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components,/connect-plugins"
@@ -178,7 +179,7 @@ services:
 
   control-center:
     # profiles: ["kafka", "all"]
-    image: confluentinc/cp-enterprise-control-center:7.1.0
+    image: confluentinc/cp-enterprise-control-center:7.7.3
     hostname: control-center
     container_name: control-center
     depends_on:
@@ -208,7 +209,7 @@ services:
 
   ksqldb-server:
     # profiles: ["kafka", "all"]
-    image: confluentinc/cp-ksqldb-server:7.1.0
+    image: confluentinc/cp-ksqldb-server:7.7.3
     hostname: ksqldb-server
     container_name: ksqldb-server
     depends_on:
@@ -236,7 +237,7 @@ services:
 
   ksqldb-cli:
     # profiles: ["kafka", "all"]
-    image: confluentinc/cp-ksqldb-cli:7.1.0
+    image: confluentinc/cp-ksqldb-cli:7.7.3
     container_name: ksqldb-cli
     hostname: ksqldb-cli
     depends_on:
@@ -252,7 +253,7 @@ services:
 
   ksql-datagen:
     # profiles: ["kafka", "all"]
-    image: confluentinc/ksqldb-examples:7.1.0
+    image: confluentinc/ksqldb-examples:7.7.3
     hostname: ksql-datagen
     container_name: ksql-datagen
     depends_on:
@@ -279,7 +280,7 @@ services:
 
   rest-proxy:
     # profiles: ["kafka", "all"]
-    image: confluentinc/cp-kafka-rest:7.1.0
+    image: confluentinc/cp-kafka-rest:7.7.3
     depends_on:
       - broker
       - schema-registry
