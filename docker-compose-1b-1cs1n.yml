@@ -28,6 +28,7 @@ services:
       - "29092:29092"
       - "9092:9092"
       - "9101:9101"
+      - "7072:7072"
     environment: 
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
@@ -47,8 +48,10 @@ services:
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       CONFLUENT_METRICS_ENABLE: 'true'
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+      JAVA_TOOL_OPTIONS: -Xmx2g -Xms512m -javaagent:/opt/jmx_exporter/jmx_prometheus_javaagent.jar=7072:/opt/jmx_exporter/config.yaml
     volumes:
       - kafka-broker1-data:/var/lib/kafka/data
+      - ./jmx_exporter:/opt/jmx_exporter
     networks:
       integration:
         ipv4_address: 172.199.0.3
@@ -87,7 +90,9 @@ services:
       - schema-registry
     ports:
       - "8083:8083"
+      - "7073:7072"
     volumes:
+      - ./jmx_exporter:/opt/jmx_exporter
       - ./data/input:/data/input
       - ./data/finished:/data/finished
       - ./data/error:/data/error
@@ -114,6 +119,7 @@ services:
       #CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
       CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR,org.apache.kafka.connect=DEBUG
       CONNECT_ZOOKEEPER_CONNECT: zookeeper:2181
+      JAVA_TOOL_OPTIONS: -Xmx2g -Xms512m -javaagent:/opt/jmx_exporter/jmx_prometheus_javaagent.jar=7072:/opt/jmx_exporter/config.yaml
     networks:
       integration:
         ipv4_address: 172.199.0.21
