@@ -50,6 +50,7 @@ services:
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
       JAVA_TOOL_OPTIONS: -Xmx2g -Xms512m -javaagent:/opt/jmx_exporter/jmx_prometheus_javaagent.jar=7072:/opt/jmx_exporter/config.yaml
     volumes:
+      - ./jmx_exporter:/opt/jmx_exporter
       - kafka-broker1-data:/var/lib/kafka/data
       - ./jmx_exporter:/opt/jmx_exporter
     networks:
@@ -93,9 +94,9 @@ services:
       - "7073:7072"
     volumes:
       - ./jmx_exporter:/opt/jmx_exporter
-      - ./data/input:/data/input
-      - ./data/finished:/data/finished
-      - ./data/error:/data/error
+      - ./sftp_root/input:/sftp_root/input
+      - ./sftp_root/finished:/sftp_root/finished
+      - ./sftp_root/error:/sftp_root/error
     environment:
       CONNECT_BOOTSTRAP_SERVERS: 'broker1:29092'
       CONNECT_REST_ADVERTISED_HOST_NAME: connect-01
